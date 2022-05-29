@@ -28,6 +28,15 @@ const routes = [
     },
   },
   {
+    method: 'GET',
+    path: '/hello/{name?}',
+    handler: (req) => {
+      let { name = 'stranger' } = req.params;
+      if (!name) name = 'stranger';
+      return `Hello, ${name}!`;
+    },
+  },
+  {
     method: '*',
     path: '/{any*}',
     handler: () => {
