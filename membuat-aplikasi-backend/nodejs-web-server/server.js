@@ -15,12 +15,18 @@ const requestListener = (request, response) => {
       switch (method) {
         case 'GET':
           response.statusCode = 200;
-          response.end('<h1>Ini adalah homepage</h1>');
+          response.end(
+            JSON.stringify({
+              message: 'Ini adalah homepage',
+            })
+          );
           break;
         default:
           response.statusCode = 400;
           response.end(
-            `<h1>Halaman tidak dapat diakses dengan ${method} request</h1>`
+            JSON.stringify({
+              message: `Halaman tidak dapat diakses dengan ${method} request`,
+            })
           );
       }
       break;
@@ -28,7 +34,11 @@ const requestListener = (request, response) => {
       switch (method) {
         case 'GET':
           response.statusCode = 200;
-          response.end('<h1>Halo! Ini adalah halaman about.</h1>');
+          response.end(
+            JSON.stringify({
+              message: 'Halo! Ini adalah halaman about.',
+            })
+          );
           break;
         case 'POST':
           let body = [];
@@ -41,20 +51,30 @@ const requestListener = (request, response) => {
             body = Buffer.concat(body).toString();
             const { name } = JSON.parse(body);
             response.statusCode = 200;
-            response.end(`<h1>Halo, ${name}! Ini adalah halaman about.</h1>`);
+            response.end(
+              JSON.stringify({
+                message: `Halo, ${name}! Ini adalah halaman about.`,
+              })
+            );
           });
           break;
         default:
           response.statusCode = 400;
           response.end(
-            `<h1>Halaman tidak dapat diakses dengan ${method} request.</h1>`
+            JSON.stringify({
+              message: `Halaman tidak dapat diakses dengan ${method} request.`,
+            })
           );
           break;
       }
       break;
     default:
       response.statusCode = 404;
-      response.end('<h1>Halaman tidak ditemukan!</h1>');
+      response.end(
+        JSON.stringify({
+          message: 'Halaman tidak ditemukan!',
+        })
+      );
       break;
   }
 };
