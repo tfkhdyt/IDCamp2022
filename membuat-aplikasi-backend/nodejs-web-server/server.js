@@ -5,7 +5,8 @@ const PORT = 5000;
 const HOST = 'localhost';
 
 const requestListener = (request, response) => {
-  response.setHeader('Content-Type', 'text/html');
+  response.setHeader('Content-Type', 'application/json');
+  response.setHeader('X-Powered-By', 'Node.js');
 
   const { method, url } = request;
 
