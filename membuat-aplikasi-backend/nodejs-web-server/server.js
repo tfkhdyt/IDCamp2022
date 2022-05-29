@@ -6,7 +6,6 @@ const HOST = 'localhost';
 
 const requestListener = (request, response) => {
   response.setHeader('Content-Type', 'text/html');
-  response.statusCode = 200;
 
   const { method, url } = request;
 
@@ -14,9 +13,11 @@ const requestListener = (request, response) => {
     case '/':
       switch (method) {
         case 'GET':
+          response.statusCode = 200;
           response.end('<h1>Ini adalah homepage</h1>');
           break;
         default:
+          response.statusCode = 400;
           response.end(
             `<h1>Halaman tidak dapat diakses dengan ${method} request</h1>`
           );
@@ -25,6 +26,7 @@ const requestListener = (request, response) => {
     case '/about':
       switch (method) {
         case 'GET':
+          response.statusCode = 200;
           response.end('<h1>Halo! Ini adalah halaman about.</h1>');
           break;
         case 'POST':
@@ -37,10 +39,12 @@ const requestListener = (request, response) => {
           request.on('end', () => {
             body = Buffer.concat(body).toString();
             const { name } = JSON.parse(body);
+            response.statusCode = 200;
             response.end(`<h1>Halo, ${name}! Ini adalah halaman about.</h1>`);
           });
           break;
         default:
+          response.statusCode = 400;
           response.end(
             `<h1>Halaman tidak dapat diakses dengan ${method} request.</h1>`
           );
@@ -48,6 +52,7 @@ const requestListener = (request, response) => {
       }
       break;
     default:
+      response.statusCode = 404;
       response.end('<h1>Halaman tidak ditemukan!</h1>');
       break;
   }
