@@ -33,6 +33,10 @@ const routes = [
     handler: (req) => {
       let { name = 'stranger' } = req.params;
       if (!name) name = 'stranger';
+
+      const { lang } = req.query;
+
+      if (lang.toLowerCase() === 'id') return `Hai, ${name}`;
       return `Hello, ${name}!`;
     },
   },
