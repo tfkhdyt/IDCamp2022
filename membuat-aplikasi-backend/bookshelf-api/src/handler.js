@@ -77,7 +77,53 @@ const addBookHandler = (req, h) => {
     .code(500);
 };
 
-const getAllBooksHandler = () => {
+const getAllBooksHandler = (req) => {
+  const { reading, finished, name } = req.query;
+
+  if (reading !== undefined) {
+    const filteredBooks = books.filter((book) => book.reading == reading);
+    return {
+      status: 'success',
+      data: {
+        books: filteredBooks.map((book) => ({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher,
+        })),
+      },
+    };
+  }
+
+  if (finished !== undefined) {
+    const filteredBooks = books.filter((book) => book.finished == finished);
+    return {
+      status: 'success',
+      data: {
+        books: filteredBooks.map((book) => ({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher,
+        })),
+      },
+    };
+  }
+
+  if (name !== undefined) {
+    const filteredBooks = books.filter((book) =>
+      book.name.toLowerCase().includes(name.toLowerCase())
+    );
+    return {
+      status: 'success',
+      data: {
+        books: filteredBooks.map((book) => ({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher,
+        })),
+      },
+    };
+  }
+
   return {
     status: 'success',
     data: {
@@ -85,6 +131,8 @@ const getAllBooksHandler = () => {
         id: book.id,
         name: book.name,
         publisher: book.publisher,
+        // reading: book.reading,
+        // finished: book.finished,
       })),
     },
   };
@@ -176,9 +224,32 @@ const updateBookByIdHandler = (req, h) => {
     .code(404);
 };
 
+const deleteBookByIdHandler = (req, h) => {
+  const { bookId } = req.params;
+  const index = books.findIndex((book) => book.id === bookId);
+
+  if (index !== -1) {
+    books.splice(index, 1);
+    return h
+      .response({
+        status: 'success',
+        message: 'Buku berhasil dihapus',
+      })
+      .code(200);
+  }
+
+  return h
+    .response({
+      status: 'fail',
+      message: 'Buku gagal dihapus. Id tidak ditemukan',
+    })
+    .code(404);
+};
+
 module.exports = {
   addBookHandler,
   getAllBooksHandler,
   getBookByIdHandler,
   updateBookByIdHandler,
+  deleteBookByIdHandler,
 };
