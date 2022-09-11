@@ -1,11 +1,13 @@
 const Hapi = require('@hapi/hapi');
-// const routes = require('./routes');
-const notesPlugin = require('./api/notes');
+const notes = require('./api/notes');
+const NotesService = require('./services/inMemory/NotesService');
 
 const init = async () => {
+  const notesService = new NotesService();
+
   const server = Hapi.server({
     port: 5000,
-    host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
+    host: '0.0.0.0',
     routes: {
       cors: {
         origin: ['*'],
@@ -14,8 +16,10 @@ const init = async () => {
   });
 
   await server.register({
-    plugin: notesPlugin,
-    options: { notes: [] },
+    plugin: notes,
+    options: {
+      service: notesService,
+    },
   });
 
   await server.start();

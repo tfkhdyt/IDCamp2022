@@ -1,17 +1,11 @@
-const notesPlugin = {
+const NotesHandler = require('./handler');
+const routes = require('./routes');
+
+module.exports = {
   name: 'notes',
   version: '1.0.0',
-  register: async (server, options) => {
-    // contoh menetapkan routing untuk /notes
-    const { notes } = options;
-    server.route([
-      {
-        method: 'GET',
-        path: '/notes',
-        handler: () => notes,
-      },
-    ]);
+  register: async (server, { service }) => {
+    const notesHandler = new NotesHandler(service);
+    server.route(routes(notesHandler));
   },
 };
-
-module.exports = notesPlugin;
