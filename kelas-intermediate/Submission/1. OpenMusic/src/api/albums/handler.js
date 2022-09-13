@@ -1,4 +1,3 @@
-const ClientError = require('../../exceptions/ClientError');
 const handleError = require('../../utils/handleError');
 
 class AlbumsHandler {
@@ -8,6 +7,7 @@ class AlbumsHandler {
 
     this.postAlbumHandler = this.postAlbumHandler.bind(this);
     this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
+    this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
   }
 
   async postAlbumHandler(request, h) {
@@ -34,6 +34,20 @@ class AlbumsHandler {
       return {
         status: 'success',
         data: { album },
+      };
+    } catch (error) {
+      return handleError(error, h);
+    }
+  }
+
+  async putAlbumByIdHandler(request, h) {
+    try {
+      this._validator.validateAlbumPayload(request.payload);
+      const { id } = request.params;
+      await this._service.editAlbumById(id, request.payload);
+      return {
+        status: 'success',
+        message: 'Album berhasil diperbarui',
       };
     } catch (error) {
       return handleError(error, h);
