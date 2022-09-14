@@ -39,12 +39,15 @@ class AlbumsService {
       throw new NotFoundError('Album tidak ditemukan');
     }
 
-    const songs = await this._songsService.getSongsByAlbumId(id);
-
-    return result.rows.map((album) => ({
-      ...album,
-      songs,
-    }))[0];
+    try {
+      const songs = await this._songsService.getSongsByAlbumId(id);
+      return result.rows.map((album) => ({
+        ...album,
+        songs,
+      }))[0];
+    } catch (error) {
+      return result.rows[0];
+    }
   }
 
   async editAlbumById(id, { name, year }) {

@@ -26,8 +26,24 @@ class SongsService {
     return result.rows[0].id;
   }
 
-  async getSongs() {
-    const result = await this._pool.query('SELECT * FROM songs');
+  async getSongs(title = null, performer = null) {
+    let query;
+    if (title && performer) {
+      query = `SELECT * FROM songs WHERE title ILIKE '%${title}%' AND performer ILIKE '%${performer}%'`;
+    } else if (title && !performer) {
+      query = `SELECT * FROM songs WHERE title ILIKE '%${title}%'`;
+    } else if (!title && performer) {
+      query = `SELECT * FROM songs WHERE performer ILIKE '%${performer}%'`;
+    } else {
+      query = 'SELECT * FROM songs';
+    }
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('Lagu tidak ditemukan');
+    }
+
     return result.rows.map((song) => ({
       id: song.id,
       title: song.title,
