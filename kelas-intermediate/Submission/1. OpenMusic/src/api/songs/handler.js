@@ -1,4 +1,4 @@
-const handleError = require('../../utils/handleError');
+const { handleError } = require('../../utils');
 
 class SongsHandler {
   constructor(service, validator) {
@@ -8,6 +8,7 @@ class SongsHandler {
     this.postSongHandler = this.postSongHandler.bind(this);
     this.getSongsHandler = this.getSongsHandler.bind(this);
     this.getSongByIdHandler = this.getSongByIdHandler.bind(this);
+    this.putSongByIdHandler = this.putSongByIdHandler.bind(this);
   }
 
   async postSongHandler(request, h) {
@@ -52,6 +53,20 @@ class SongsHandler {
       return {
         status: 'success',
         data: { song },
+      };
+    } catch (error) {
+      return handleError(error, h);
+    }
+  }
+
+  async putSongByIdHandler(request, h) {
+    try {
+      this._validator.validateSongPayload(request.payload);
+      const { id } = request.params;
+      await this._service.editSongById(id, request.payload);
+      return {
+        status: 'success',
+        message: 'Lagu berhasil diperbarui',
       };
     } catch (error) {
       return handleError(error, h);

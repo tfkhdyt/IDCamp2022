@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 const ClientError = require('../exceptions/ClientError');
 
 const handleError = (error, h) => {
@@ -19,4 +20,22 @@ const handleError = (error, h) => {
   return response;
 };
 
-module.exports = handleError;
+const mapDBToModel = ({
+  id,
+  title,
+  year,
+  genre,
+  performer,
+  duration,
+  album_id,
+}) => ({
+  id,
+  title,
+  year,
+  genre,
+  performer,
+  duration,
+  albumId: album_id,
+});
+
+module.exports = { handleError, mapDBToModel };
