@@ -9,6 +9,7 @@ class SongsHandler {
     this.getSongsHandler = this.getSongsHandler.bind(this);
     this.getSongByIdHandler = this.getSongByIdHandler.bind(this);
     this.putSongByIdHandler = this.putSongByIdHandler.bind(this);
+    this.deleteSongByIdHandler = this.deleteSongByIdHandler.bind(this);
   }
 
   async postSongHandler(request, h) {
@@ -67,6 +68,20 @@ class SongsHandler {
       return {
         status: 'success',
         message: 'Lagu berhasil diperbarui',
+      };
+    } catch (error) {
+      return handleError(error, h);
+    }
+  }
+
+  async deleteSongByIdHandler(request, h) {
+    try {
+      const { id } = request.params;
+      await this._service.deleteSongById(id);
+
+      return {
+        status: 'success',
+        message: 'Lagu berhasil dihapus',
       };
     } catch (error) {
       return handleError(error, h);
