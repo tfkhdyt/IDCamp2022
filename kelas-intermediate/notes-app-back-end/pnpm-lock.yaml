@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@hapi/hapi': ^20.1.0
+  auto-bind: ^5.0.1
   bcrypt: ^5.0.1
   dotenv: ^16.0.2
   eslint: ^7.21.0
@@ -15,6 +16,7 @@ specifiers:
 
 dependencies:
   '@hapi/hapi': 20.2.2
+  auto-bind: 5.0.1
   bcrypt: 5.0.1
   dotenv: 16.0.2
   joi: 17.6.0
@@ -472,6 +474,11 @@ packages:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
     engines: {node: '>=8'}
     dev: true
+
+  /auto-bind/5.0.1:
+    resolution: {integrity: sha512-ooviqdwwgfIfNmDwo94wlshcdzfO64XV0Cg6oDsDYBJfITDz1EngD2z7DkbvCWn+XIMsIqW27sEVF6qcpJrRcg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: false
 
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
