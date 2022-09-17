@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@hapi/hapi': ^20.1.0
+  '@hapi/jwt': ^3.0.0
   auto-bind: ^5.0.1
   bcrypt: ^5.0.1
   dotenv: ^16.0.2
@@ -16,6 +17,7 @@ specifiers:
 
 dependencies:
   '@hapi/hapi': 20.2.2
+  '@hapi/jwt': 3.0.0
   auto-bind: 5.0.1
   bcrypt: 5.0.1
   dotenv: 16.0.2
@@ -88,6 +90,18 @@ packages:
       '@hapi/hoek': 9.3.0
     dev: false
 
+  /@hapi/b64/6.0.0:
+    resolution: {integrity: sha512-Es6o4BtzvMmNF28KJGuwUzUtMjF6ToZ1hQt3UOjaXc6TNkRefel+NyQSjc9b5q3Re7xwv23r0xK3Vo3yreaJHQ==}
+    dependencies:
+      '@hapi/hoek': 10.0.1
+    dev: false
+
+  /@hapi/boom/10.0.0:
+    resolution: {integrity: sha512-1YVs9tLHhypBqqinKQRqh7FUERIolarQApO37OWkzD+z6y6USi871Sv746zBPKcIOBuI6g6y4FrwX87mmJ90Gg==}
+    dependencies:
+      '@hapi/hoek': 10.0.1
+    dev: false
+
   /@hapi/boom/9.1.4:
     resolution: {integrity: sha512-Ls1oH8jaN1vNsqcaHVYJrKmgMcKsC1wcp8bujvXrHaAqD2iDYq3HoOwsxwo09Cuda5R5nC0o0IxlrlTuvPuzSw==}
     dependencies:
@@ -101,8 +115,19 @@ packages:
       '@hapi/hoek': 9.3.0
     dev: false
 
+  /@hapi/bounce/3.0.0:
+    resolution: {integrity: sha512-L0G4NcwwOYRhpcXeL76hNrLTUcObqtZMB3z4kcRVUZcR/w3v6C5Q1cTElV4/V7og1fG+wOyDR55UMFA+tWfhtA==}
+    dependencies:
+      '@hapi/boom': 10.0.0
+      '@hapi/hoek': 10.0.1
+    dev: false
+
   /@hapi/bourne/2.1.0:
     resolution: {integrity: sha512-i1BpaNDVLJdRBEKeJWkVO6tYX6DMFBuwMhSuWqLsY4ufeTKGVuV5rBsUhxPayXqnnWHgXUAmWK16H/ykO5Wj4Q==}
+    dev: false
+
+  /@hapi/bourne/3.0.0:
+    resolution: {integrity: sha512-Waj1cwPXJDucOib4a3bAISsKJVb15MKi9IvmTI/7ssVEm6sywXGjVJDhl6/umt1pK1ZS7PacXU3A1PmFKHEZ2w==}
     dev: false
 
   /@hapi/call/8.0.1:
@@ -117,6 +142,13 @@ packages:
     dependencies:
       '@hapi/boom': 9.1.4
       '@hapi/hoek': 9.3.0
+    dev: false
+
+  /@hapi/catbox-object/3.0.0:
+    resolution: {integrity: sha512-1XGSAvUP8FB62OWB87XQcgZhzPaHrmXHBecNrs975nCuTkF8LIDyhRw3dp2omT3vJKT0+pUEfSzHhJ+1SLQCJw==}
+    dependencies:
+      '@hapi/boom': 10.0.0
+      '@hapi/hoek': 10.0.1
     dev: false
 
   /@hapi/catbox/11.1.1:
@@ -139,6 +171,13 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       '@hapi/boom': 9.1.4
+    dev: false
+
+  /@hapi/cryptiles/6.0.0:
+    resolution: {integrity: sha512-CUypQJI2F3HaKZjwlky3KyLu7p0O4WJXNJj+2AZ0czqwkwQIz8j+btOkzA3OMar8WTntnCrDx0f92PzxEK+JlA==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@hapi/boom': 10.0.0
     dev: false
 
   /@hapi/file/2.0.0:
@@ -177,6 +216,10 @@ packages:
       '@hapi/validate': 1.1.3
     dev: false
 
+  /@hapi/hoek/10.0.1:
+    resolution: {integrity: sha512-CvlW7jmOhWzuqOqiJQ3rQVLMcREh0eel4IBnxDx2FAcK8g7qoJRQK4L1CPBASoCY6y8e6zuCy3f2g+HWdkzcMw==}
+    dev: false
+
   /@hapi/hoek/9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
     dev: false
@@ -189,6 +232,21 @@ packages:
       '@hapi/bourne': 2.1.0
       '@hapi/cryptiles': 5.1.0
       '@hapi/hoek': 9.3.0
+    dev: false
+
+  /@hapi/jwt/3.0.0:
+    resolution: {integrity: sha512-HH0zVn6WrAUOZQnlqP8XcbQzsqCdrcI8YGMuGVrKahVXH+RvARPVLGToneWprGcbA8sHSwoanJeAjKovyUo8vg==}
+    dependencies:
+      '@hapi/b64': 6.0.0
+      '@hapi/boom': 10.0.0
+      '@hapi/bounce': 3.0.0
+      '@hapi/bourne': 3.0.0
+      '@hapi/catbox-object': 3.0.0
+      '@hapi/cryptiles': 6.0.0
+      '@hapi/hoek': 10.0.1
+      '@hapi/wreck': 18.0.0
+      ecdsa-sig-formatter: 1.0.11
+      joi: 17.6.0
     dev: false
 
   /@hapi/mimos/6.0.0:
@@ -292,6 +350,14 @@ packages:
       '@hapi/boom': 9.1.4
       '@hapi/bourne': 2.1.0
       '@hapi/hoek': 9.3.0
+    dev: false
+
+  /@hapi/wreck/18.0.0:
+    resolution: {integrity: sha512-Yk9STxoM06Hjjq58cH0KFG91u9F2h9eVE72o8vUr3AfK80qt7I2POG5+cDGTEntbnvvzm0ERow2sjG3QsqCWUA==}
+    dependencies:
+      '@hapi/boom': 10.0.0
+      '@hapi/bourne': 3.0.0
+      '@hapi/hoek': 10.0.1
     dev: false
 
   /@humanwhocodes/config-array/0.5.0:
@@ -707,6 +773,12 @@ packages:
   /dotenv/16.0.2:
     resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==}
     engines: {node: '>=12'}
+    dev: false
+
+  /ecdsa-sig-formatter/1.0.11:
+    resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
+    dependencies:
+      safe-buffer: 5.2.1
     dev: false
 
   /emoji-regex/8.0.0:
