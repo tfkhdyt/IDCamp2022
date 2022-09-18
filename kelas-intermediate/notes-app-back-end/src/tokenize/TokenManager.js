@@ -2,16 +2,17 @@ const Jwt = require('@hapi/jwt');
 
 const InvariantError = require('../exceptions/InvariantError');
 
+const { REFRESH_TOKEN_KEY } = process.env;
+
 const TokenManager = {
-  refreshTokenKey: process.env.REFRESH_TOKEN_KEY,
   generateAccessToken: (payload) =>
     Jwt.token.generate(payload, process.env.ACCESS_TOKEN_KEY),
   generateRefreshToken: (payload) =>
-    Jwt.token.generate(payload, this.refreshTokenKey),
+    Jwt.token.generate(payload, REFRESH_TOKEN_KEY),
   verifyRefreshToken(refreshToken) {
     try {
       const artifacts = Jwt.token.decode(refreshToken);
-      Jwt.token.verifySignature(artifacts, this.refreshTokenKey);
+      Jwt.token.verifySignature(artifacts, REFRESH_TOKEN_KEY);
 
       const { payload } = artifacts.decoded;
       return payload;
