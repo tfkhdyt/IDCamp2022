@@ -74,7 +74,7 @@ class UsersService {
     if (!result.rowCount) {
       throw new AuthenticationError(
         // eslint-disable-next-line comma-dangle
-        'Username yang Anda berikan tidak ditemukan'
+        'Kredensial yang Anda berikan salah'
       );
     }
 
@@ -83,7 +83,7 @@ class UsersService {
     const match = await bcrypt.compare(password, hashedPassword);
 
     if (!match) {
-      throw new AuthenticationError('Password yang Anda berikan salah');
+      throw new AuthenticationError('Kredensial yang Anda berikan salah');
     }
 
     return id;
