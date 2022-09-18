@@ -1,4 +1,4 @@
-const { default: autoBind } = require('auto-bind');
+const autoBind = require('auto-bind');
 const failResponse = require('../../utils/responses/fail');
 const successResponse = require('../../utils/responses/success');
 
@@ -18,7 +18,7 @@ class AuthenticationsHandler {
       this._validator.validatePostAuthenticationPayload(request.payload);
 
       const { username, password } = request.payload;
-      const id = await this._usersService.verifyUserCredential(
+      const id = await this._usersService.verifyUserCredentials(
         username,
         password
       );
@@ -51,7 +51,7 @@ class AuthenticationsHandler {
       const accessToken = this._tokenManager.generateAccessToken({ id });
 
       return successResponse(h, {
-        message: 'Access token berhasil diperbarui',
+        message: 'Access Token berhasil diperbarui',
         data: { accessToken },
       });
     } catch (error) {
