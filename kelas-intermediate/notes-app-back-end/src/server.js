@@ -1,24 +1,30 @@
 require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
-
 const Jwt = require('@hapi/jwt');
+
 const notes = require('./api/notes');
 const users = require('./api/users');
 const authentications = require('./api/authentications');
+
+const AuthenticationsService = require('./services/postgres/AuthenticationsService');
+const CollaborationsService = require('./services/postgres/CollaborationsService');
 const NotesService = require('./services/postgres/NotesService');
 const UsersService = require('./services/postgres/UsersService');
-const AuthenticationsService = require('./services/postgres/AuthenticationsService');
+
+const AuthenticationsValidator = require('./validator/authentications');
+const CollaborationsValidator = require('./validator/collaborations');
 const NotesValidator = require('./validator/notes');
 const UsersValidator = require('./validator/users');
-const AuthenticationsValidator = require('./validator/authentications');
 
 const TokenManager = require('./tokenize/TokenManager');
+const collaborations = require('./api/collaborations');
 
 const init = async () => {
   const notesService = new NotesService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
+  const collaborationsService = new CollaborationsService();
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -30,7 +36,7 @@ const init = async () => {
     },
   });
 
-  // registrasi plugin eksternal
+  // registrasi plugin otentikasi jwt
   await server.register([
     {
       plugin: Jwt,
@@ -75,6 +81,14 @@ const init = async () => {
         usersService,
         tokenManager: TokenManager,
         validator: AuthenticationsValidator,
+      },
+    },
+    {
+      plugin: collaborations,
+      options: {
+        collaborationsService,
+        notesService,
+        validator: CollaborationsValidator,
       },
     },
   ]);
