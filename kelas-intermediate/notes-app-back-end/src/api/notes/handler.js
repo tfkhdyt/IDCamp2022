@@ -1,5 +1,6 @@
 const autoBind = require('auto-bind');
 const ClientError = require('../../exceptions/ClientError');
+const failResponse = require('../../utils/responses/fail');
 const successResponse = require('../../utils/responses/success');
 
 /* eslint-disable no-underscore-dangle */
@@ -64,7 +65,7 @@ class NotesHandler {
       const { id } = request.params;
       const { id: credentialId } = request.auth.credentials;
 
-      await this._service.verifyNoteOwner(id, credentialId);
+      await this._service.verifyNoteAccess(id, credentialId);
       const note = await this._service.getNoteById(id);
 
       return {
@@ -72,22 +73,7 @@ class NotesHandler {
         data: { note },
       };
     } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      const response = h.response({
-        status: 'error',
-        message: 'Maaf, terjadi kegagalan pada server kami.',
-      });
-      response.code(500);
-      console.error(error);
-      return response;
+      return failResponse(error, h);
     }
   }
 
