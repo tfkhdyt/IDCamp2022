@@ -31,6 +31,21 @@ class AuthenticationsHandler {
       statusCode: 201,
     });
   }
+
+  async putAuthenticationHandler(request, h) {
+    this._validator.validatePutAuthenticationPayload(request.payload);
+
+    const { refreshToken } = request.payload;
+
+    await this._authenticationsService.verifyRefreshToken(refreshToken);
+
+    const { id } = this._tokenManager.verifyRefreshToken(refreshToken);
+    const accessToken = this._tokenManager.generateRefreshToken({ id });
+
+    return successResponse(h, {
+      data: { accessToken },
+    });
+  }
 }
 
 module.exports = AuthenticationsHandler;
