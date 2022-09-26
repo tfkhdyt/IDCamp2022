@@ -5,6 +5,7 @@ const Jwt = require('@hapi/jwt');
 
 const albums = require('./api/albums');
 const authentications = require('./api/authentications');
+const playlists = require('./api/playlists');
 const songs = require('./api/songs');
 const users = require('./api/users');
 
@@ -14,6 +15,7 @@ const TokenManager = require('./tokenize/TokenManager');
 
 const AlbumsService = require('./services/postgres/AlbumsService');
 const AuthenticationsService = require('./services/postgres/AuthenticationsService');
+const PlaylistsService = require('./services/postgres/PlaylistsService');
 const SongsService = require('./services/postgres/SongsService');
 const UsersService = require('./services/postgres/UsersService');
 
@@ -22,6 +24,7 @@ const failResponse = require('./utils/responses/fail');
 
 const AlbumsValidator = require('./validator/albums');
 const AuthenticationsValidator = require('./validator/authentications');
+const PlaylistsValidator = require('./validator/playlists');
 const SongsValidator = require('./validator/songs');
 const UsersValidator = require('./validator/users');
 
@@ -30,6 +33,7 @@ const init = async () => {
   const songsService = new SongsService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
+  const playlistsService = new PlaylistsService();
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -39,6 +43,28 @@ const init = async () => {
         origin: ['*'],
       },
     },
+  });
+
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+  ]);
+
+  server.auth.strategy('openmusic_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
   });
 
   await server.register([
@@ -73,38 +99,32 @@ const init = async () => {
       },
     },
     {
-      plugin: Jwt,
+      plugin: playlists,
+      options: {
+        service: playlistsService,
+        validator: PlaylistsValidator,
+      },
     },
   ]);
-
-  server.auth.strategy('openmusic_jwt', 'jwt', {
-    keys: process.env.ACCESS_TOKEN_KEY,
-    verify: {
-      aud: false,
-      iss: false,
-      sub: false,
-      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
-    },
-    validate: (artifacts) => ({
-      isValid: true,
-      credentials: {
-        id: artifacts.decoded.payload.id,
-      },
-    }),
-  });
 
   server.ext('onPreResponse', (request, h) => {
     const { response } = request;
 
     if (response instanceof Error) {
+      const { message, statusCode } = response;
       if (response instanceof ClientError) {
-        return failResponse(h, response);
+        console.error(message);
+        return failResponse(h, {
+          message,
+          statusCode,
+        });
       }
 
       if (!response.isServer) {
         return h.continue;
       }
 
+      console.error(message);
       return errorResponse(h);
     }
 

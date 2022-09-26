@@ -1,10 +1,10 @@
-const failResponse = (h, response) => {
+const failResponse = (h, { message, statusCode = 400 }) => {
   const newResponse = h
     .response({
       status: 'fail',
-      message: response.message,
+      message: message,
     })
-    .code(response.statusCode);
+    .code(statusCode);
   return newResponse;
 };
 

@@ -21,7 +21,6 @@ class UsersHandler {
     });
 
     return successResponse(h, {
-      message: 'User berhasil ditambahkan',
       data: { userId },
       statusCode: 201,
     });
