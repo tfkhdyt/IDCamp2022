@@ -12,13 +12,10 @@ class PlaylistsHandler {
   }
 
   async postPlaylistHandler(request, h) {
-    let credentialId;
-
     if (request.auth.credentials === null) {
-      console.log(request.auth);
       throw new AuthenticationError('Token tidak valid');
     }
-    credentialId = request.auth.credentials.id;
+    const { id: credentialId } = request.auth.credentials;
 
     this._validator.validatePlaylistPayload(request.payload);
     const { name } = request.payload;
@@ -31,6 +28,19 @@ class PlaylistsHandler {
     return successResponse(h, {
       data: { playlistId },
       statusCode: 201,
+    });
+  }
+
+  async getPlaylistsHandler(request, h) {
+    if (request.auth.credentials === null) {
+      throw new AuthenticationError('Token tidak valid');
+    }
+
+    const { id: credentialId } = request.auth.credentials;
+    const playlists = await this._service.getPlaylists({ owner: credentialId });
+
+    return successResponse(h, {
+      data: { playlists },
     });
   }
 }
