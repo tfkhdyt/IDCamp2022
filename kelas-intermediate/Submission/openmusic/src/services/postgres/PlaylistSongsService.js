@@ -53,6 +53,19 @@ class PlaylistSongsService {
       },
     };
   }
+
+  async deletePlaylistSongById(playlistId, songId) {
+    const query = {
+      text: 'DELETE FROM playlist_songs WHERE playlist_id = $1 AND song_id = $2 RETURNING id',
+      values: [playlistId, songId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Lagu pada playlist gagal dihapus');
+    }
+  }
 }
 
 module.exports = PlaylistSongsService;
