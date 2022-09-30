@@ -1,6 +1,7 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
-const InvariantError = require('../../../../../notes-app-back-end/src/exceptions/InvariantError');
+
+const InvariantError = require('../../exceptions/InvariantError');
 
 class PlaylistSongsService {
   constructor(songsService) {

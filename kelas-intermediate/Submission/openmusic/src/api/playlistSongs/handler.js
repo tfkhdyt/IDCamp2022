@@ -1,5 +1,6 @@
 const autoBind = require('auto-bind');
-const successResponse = require('../../../../../notes-app-back-end/src/utils/responses/success');
+
+const successResponse = require('../../utils/responses/success');
 
 class PlaylistSongsHandler {
   constructor(playlistSongsService, playlistsService, validator) {
