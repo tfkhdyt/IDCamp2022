@@ -27,6 +27,19 @@ class PlaylistSongsHandler {
       code: 201,
     });
   }
+
+  async getPlaylistSongsHandler(request, h) {
+    const { id: credentialId } = request.auth.credentials;
+    const { id: playlistId } = request.params;
+
+    await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
+
+    const data = await this._playlistSongsService.getPlaylistSongs(playlistId);
+
+    return successResponse(h, {
+      data,
+    });
+  }
 }
 
 module.exports = PlaylistSongsHandler;
