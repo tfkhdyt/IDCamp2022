@@ -3,9 +3,15 @@ const autoBind = require('auto-bind');
 const successResponse = require('../../utils/responses/success');
 
 class PlaylistSongsHandler {
-  constructor(playlistSongsService, playlistsService, validator) {
+  constructor(
+    playlistSongsService,
+    playlistsService,
+    playlistSongActivitiesService,
+    validator
+  ) {
     this._playlistSongsService = playlistSongsService;
     this._playlistsService = playlistsService;
+    this._playlistSongActivitiesService = playlistSongActivitiesService;
     this._validator = validator;
 
     autoBind(this);
@@ -20,10 +26,16 @@ class PlaylistSongsHandler {
 
     await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
     await this._playlistSongsService.addPlaylistSong(playlistId, songId);
+    await this._playlistSongActivitiesService.addPlaylistSongActivity({
+      playlistId,
+      songId,
+      userId: credentialId,
+      action: 'add',
+    });
 
     return successResponse(h, {
       message: 'Lagu berhasil ditambahkan ke dalam playlist',
-      code: 201,
+      statusCode: 201,
     });
   }
 
@@ -49,6 +61,12 @@ class PlaylistSongsHandler {
 
     await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
     await this._playlistSongsService.deletePlaylistSongById(playlistId, songId);
+    await this._playlistSongActivitiesService.addPlaylistSongActivity({
+      playlistId,
+      songId,
+      userId: credentialId,
+      action: 'delete',
+    });
 
     return successResponse(h, {
       message: 'Lagu berhasil dihapus dari playlist',

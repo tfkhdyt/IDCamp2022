@@ -28,7 +28,7 @@ class NotesHandler {
       return successResponse(h, {
         message: 'Catatan berhasil ditambahkan',
         data: { noteId },
-        code: 201,
+        statusCode: 201,
       });
     } catch (error) {
       if (error instanceof ClientError) {

@@ -28,7 +28,7 @@ class CollaborationsHandler {
       return successResponse(h, {
         message: 'Kolaborasi berhasil ditambahkan',
         data: { collaborationId },
-        code: 201,
+        statusCode: 201,
       });
     } catch (error) {
       return failResponse(error, h);

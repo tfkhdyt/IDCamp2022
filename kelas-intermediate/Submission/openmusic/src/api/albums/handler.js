@@ -45,7 +45,7 @@ class AlbumsHandler {
     await this._service.deleteAlbumById(id);
 
     return successResponse(h, {
-      message: 'Catatan berhasil dihapus',
+      message: 'Album berhasil dihapus',
     });
   }
 }

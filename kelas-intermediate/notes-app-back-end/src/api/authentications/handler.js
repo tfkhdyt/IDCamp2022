@@ -34,7 +34,7 @@ class AuthenticationsHandler {
           accessToken,
           refreshToken,
         },
-        code: 201,
+        statusCode: 201,
       });
     } catch (error) {
       return failResponse(error, h);
