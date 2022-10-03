@@ -5,6 +5,7 @@ const Jwt = require('@hapi/jwt');
 
 const albums = require('./api/albums');
 const authentications = require('./api/authentications');
+const collaborations = require('./api/collaborations');
 const playlists = require('./api/playlists');
 const playlistSongActivities = require('./api/playlistSongActivities');
 const playlistSongs = require('./api/playlistSongs');
@@ -17,6 +18,7 @@ const TokenManager = require('./tokenize/TokenManager');
 
 const AlbumsService = require('./services/postgres/AlbumsService');
 const AuthenticationsService = require('./services/postgres/AuthenticationsService');
+const CollaborationsService = require('./services/postgres/CollaborationsService');
 const PlaylistsService = require('./services/postgres/PlaylistsService');
 const PlaylistSongActivitiesService = require('./services/postgres/PlaylistSongActivitiesService');
 const PlaylistSongsService = require('./services/postgres/PlaylistSongsService');
@@ -28,6 +30,7 @@ const failResponse = require('./utils/responses/fail');
 
 const AlbumsValidator = require('./validator/albums');
 const AuthenticationsValidator = require('./validator/authentications');
+const CollaborationsValidator = require('./validator/collaborations');
 const PlaylistsValidator = require('./validator/playlists');
 const PlaylistSongsValidator = require('./validator/playlistSongs');
 const SongsValidator = require('./validator/songs');
@@ -37,8 +40,9 @@ const init = async () => {
   const albumsService = new AlbumsService();
   const songsService = new SongsService();
   const usersService = new UsersService();
+  const collaborationsService = new CollaborationsService(usersService);
   const authenticationsService = new AuthenticationsService();
-  const playlistsService = new PlaylistsService();
+  const playlistsService = new PlaylistsService(collaborationsService);
   const playlistSongsService = new PlaylistSongsService(
     playlistsService,
     songsService
@@ -132,6 +136,14 @@ const init = async () => {
         validator: PlaylistSongsValidator,
       },
     },
+    {
+      plugin: collaborations,
+      options: {
+        collaborationsService,
+        playlistsService,
+        validator: CollaborationsValidator,
+      },
+    },
   ]);
 
   server.ext('onPreResponse', (request, h) => {
@@ -140,7 +152,7 @@ const init = async () => {
     if (response instanceof Error) {
       const { message, statusCode } = response;
       if (response instanceof ClientError) {
-        console.error(response);
+        console.error(message);
         return failResponse(h, {
           message,
           statusCode,
@@ -151,7 +163,7 @@ const init = async () => {
         return h.continue;
       }
 
-      console.error(response);
+      console.error(message);
       return errorResponse(h);
     }
 
