@@ -3,6 +3,7 @@ require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 
+const _exports = require('./api/exports');
 const notes = require('./api/notes');
 const users = require('./api/users');
 const authentications = require('./api/authentications');
@@ -19,6 +20,11 @@ const UsersValidator = require('./validator/users');
 
 const TokenManager = require('./tokenize/TokenManager');
 const collaborations = require('./api/collaborations');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const ExportsValidator = require('./validator/exports');
+const ClientError = require('./exceptions/ClientError');
+const failResponse = require('./utils/responses/fail');
+const errorResponse = require('./utils/responses/error');
 
 const init = async () => {
   const collaborationsService = new CollaborationsService();
@@ -91,7 +97,37 @@ const init = async () => {
         validator: CollaborationsValidator,
       },
     },
+    {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        validator: ExportsValidator,
+      },
+    },
   ]);
+
+  server.ext('onPreResponse', (request, h) => {
+    const { response } = request;
+
+    if (response instanceof Error) {
+      const { message, statusCode } = response;
+      if (response instanceof ClientError) {
+        return failResponse(h, {
+          message,
+          statusCode,
+        });
+      }
+
+      if (!response.isServer) {
+        return h.continue;
+      }
+
+      console.error(message);
+      return errorResponse(h);
+    }
+
+    return h.continue;
+  });
 
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
