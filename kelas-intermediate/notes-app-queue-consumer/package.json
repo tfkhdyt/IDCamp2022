@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "tfkhdyt",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.0.3",
+    "nodemailer": "^6.8.0",
+    "pg": "^8.8.0"
+  }
 }
