@@ -14,5 +14,9 @@
     "dotenv": "^16.0.3",
     "nodemailer": "^6.8.0",
     "pg": "^8.8.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "eslint": "^8.25.0"
   }
 }
