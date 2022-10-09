@@ -18,7 +18,7 @@ class UploadsHandler {
 
     return successResponse(h, {
       data: {
-        fileLocation: `http://${process.env.HOST}:${process.env.PORT}/uploads/images/${filename}`,
+        fileLocation: `http://${process.env.HOST}:${process.env.PORT}/upload/images/${filename}`,
       },
       code: 201,
     });

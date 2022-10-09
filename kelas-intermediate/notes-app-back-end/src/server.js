@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const Inert = require('@hapi/inert');
 const path = require('path');
 
 const authentications = require('./api/authentications');
@@ -38,7 +39,7 @@ const init = async () => {
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
   const storageService = new StorageService(
-    path.resolve(__dirname, 'api/uploads/file/images')
+    path.resolve(__dirname, './api/uploads/file/images')
   );
 
   const server = Hapi.server({
@@ -51,10 +52,13 @@ const init = async () => {
     },
   });
 
-  // registrasi plugin otentikasi jwt
+  // registrasi plugin eksternal
   await server.register([
     {
       plugin: Jwt,
+    },
+    {
+      plugin: Inert,
     },
   ]);
 
