@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./src/consumer.js"
+    "dev": "node src/consumer.js"
   },
   "keywords": [],
   "author": "tfkhdyt",

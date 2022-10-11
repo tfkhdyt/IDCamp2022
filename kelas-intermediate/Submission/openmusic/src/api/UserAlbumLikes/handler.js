@@ -45,10 +45,20 @@ class UserAlbumLikesHandler {
   async getUserAlbumLikesHandler(request, h) {
     const { id: albumId } = request.params;
 
-    const likes = await this._userAlbumLikesService.getTotalLikes(albumId);
+    let likes;
+
+    try {
+      likes = await this._userAlbumLikesService.getTotalLikesFromCache(albumId);
+    } catch (error) {
+      likes = await this._userAlbumLikesService.getTotalLikes(albumId);
+      return successResponse(h, {
+        data: { likes: parseInt(likes) },
+      });
+    }
 
     return successResponse(h, {
       data: { likes: parseInt(likes) },
+      isCache: true,
     });
   }
 }
