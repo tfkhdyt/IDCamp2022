@@ -31,10 +31,12 @@ const ExportsValidator = require('./validator/exports');
 const NotesValidator = require('./validator/notes');
 const UploadsValidator = require('./validator/uploads');
 const UsersValidator = require('./validator/users');
+const CacheService = require('./services/redis/CacheService');
 
 const init = async () => {
-  const collaborationsService = new CollaborationsService();
-  const notesService = new NotesService(collaborationsService);
+  const cacheService = new CacheService();
+  const collaborationsService = new CollaborationsService(cacheService);
+  const notesService = new NotesService(collaborationsService, cacheService);
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
   /*  const storageService = new StorageService(
