@@ -133,7 +133,6 @@ const init = async () => {
       options: {
         playlistSongActivitiesService,
         playlistsService,
-        validator: PlaylistSongsValidator,
       },
     },
     {
