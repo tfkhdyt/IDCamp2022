@@ -39,12 +39,10 @@ class AlbumsService {
       throw new NotFoundError('Album tidak ditemukan');
     }
 
+    const album = result.rows[0];
     try {
-      const songs = await this._songsService.getSongsByAlbumId(id);
-      return result.rows.map((album) => ({
-        ...album,
-        songs,
-      }))[0];
+      album.songs = await this._songsService.getSongsByAlbumId(id);
+      return album;
     } catch (error) {
       return result.rows[0];
     }
