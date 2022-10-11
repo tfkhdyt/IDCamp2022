@@ -15,6 +15,7 @@ const playlistSongs = require('./api/playlistSongs');
 const songs = require('./api/songs');
 const uploads = require('./api/uploads');
 const users = require('./api/users');
+const UserAlbumLikes = require('./api/userAlbumLikes');
 
 const ClientError = require('./exceptions/ClientError');
 
@@ -46,7 +47,6 @@ const SongsValidator = require('./validator/songs');
 const UploadsValidator = require('./validator/uploads');
 const UsersValidator = require('./validator/users');
 const UserAlbumLikesService = require('./services/postgres/UserAlbumLikesService');
-const UserAlbumLikes = require('./api/UserAlbumLikes');
 
 const init = async () => {
   const albumsService = new AlbumsService();
