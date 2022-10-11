@@ -2,15 +2,20 @@ require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const Inert = require('@hapi/inert');
+const path = require('path');
 
 const albums = require('./api/albums');
 const authentications = require('./api/authentications');
 const collaborations = require('./api/collaborations');
+const _exports = require('./api/exports');
 const playlists = require('./api/playlists');
 const playlistSongActivities = require('./api/playlistSongActivities');
 const playlistSongs = require('./api/playlistSongs');
 const songs = require('./api/songs');
+const uploads = require('./api/uploads');
 const users = require('./api/users');
+const UserAlbumLikes = require('./api/userAlbumLikes');
 
 const ClientError = require('./exceptions/ClientError');
 
@@ -24,20 +29,28 @@ const PlaylistSongActivitiesService = require('./services/postgres/PlaylistSongA
 const PlaylistSongsService = require('./services/postgres/PlaylistSongsService');
 const SongsService = require('./services/postgres/SongsService');
 const UsersService = require('./services/postgres/UsersService');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const CacheService = require('./services/redis/CacheService');
+const StorageService = require('./services/storage/StorageService');
 
+const config = require('./utils/config');
 const errorResponse = require('./utils/responses/error');
 const failResponse = require('./utils/responses/fail');
 
 const AlbumsValidator = require('./validator/albums');
 const AuthenticationsValidator = require('./validator/authentications');
 const CollaborationsValidator = require('./validator/collaborations');
+const ExportsValidator = require('./validator/exports');
 const PlaylistsValidator = require('./validator/playlists');
 const PlaylistSongsValidator = require('./validator/playlistSongs');
 const SongsValidator = require('./validator/songs');
+const UploadsValidator = require('./validator/uploads');
 const UsersValidator = require('./validator/users');
+const UserAlbumLikesService = require('./services/postgres/UserAlbumLikesService');
 
 const init = async () => {
   const albumsService = new AlbumsService();
+  const cacheService = new CacheService();
   const songsService = new SongsService();
   const usersService = new UsersService();
   const collaborationsService = new CollaborationsService(usersService);
@@ -48,10 +61,14 @@ const init = async () => {
     songsService
   );
   const playlistSongActivitiesService = new PlaylistSongActivitiesService();
+  const storageService = new StorageService(
+    path.resolve(__dirname, './api/uploads/file/covers')
+  );
+  const userAlbumLikesService = new UserAlbumLikesService(cacheService);
 
   const server = Hapi.server({
-    port: process.env.PORT,
-    host: process.env.HOST,
+    port: config.app.port,
+    host: config.app.host,
     routes: {
       cors: {
         origin: ['*'],
@@ -63,15 +80,18 @@ const init = async () => {
     {
       plugin: Jwt,
     },
+    {
+      plugin: Inert,
+    },
   ]);
 
   server.auth.strategy('openmusic_jwt', 'jwt', {
-    keys: process.env.ACCESS_TOKEN_KEY,
+    keys: config.jwt.accessTokenKey,
     verify: {
       aud: false,
       iss: false,
       sub: false,
-      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+      maxAgeSec: config.jwt.accessTokenAge,
     },
     validate: (artifacts) => ({
       isValid: true,
@@ -133,7 +153,6 @@ const init = async () => {
       options: {
         playlistSongActivitiesService,
         playlistsService,
-        validator: PlaylistSongsValidator,
       },
     },
     {
@@ -144,6 +163,29 @@ const init = async () => {
         validator: CollaborationsValidator,
       },
     },
+    {
+      plugin: _exports,
+      options: {
+        producerService: ProducerService,
+        playlistsService: playlistsService,
+        validator: ExportsValidator,
+      },
+    },
+    {
+      plugin: uploads,
+      options: {
+        storageService,
+        albumsService,
+        validator: UploadsValidator,
+      },
+    },
+    {
+      plugin: UserAlbumLikes,
+      options: {
+        userAlbumLikesService,
+        albumsService,
+      },
+    },
   ]);
 
   server.ext('onPreResponse', (request, h) => {
@@ -152,7 +194,6 @@ const init = async () => {
     if (response instanceof Error) {
       const { message, statusCode } = response;
       if (response instanceof ClientError) {
-        console.error(message);
         return failResponse(h, {
           message,
           statusCode,
@@ -163,7 +204,7 @@ const init = async () => {
         return h.continue;
       }
 
-      console.error(message);
+      console.error(response);
       return errorResponse(h);
     }
 

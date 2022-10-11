@@ -1,5 +1,4 @@
 const autoBind = require('auto-bind');
-const AuthenticationError = require('../../exceptions/AuthenticationError');
 
 const successResponse = require('../../utils/responses/success');
 
@@ -12,9 +11,6 @@ class PlaylistsHandler {
   }
 
   async postPlaylistHandler(request, h) {
-    if (request.auth.credentials === null) {
-      throw new AuthenticationError('Token tidak valid');
-    }
     const { id: credentialId } = request.auth.credentials;
 
     this._validator.validatePlaylistPayload(request.payload);
@@ -32,10 +28,6 @@ class PlaylistsHandler {
   }
 
   async getPlaylistsHandler(request, h) {
-    if (request.auth.credentials === null) {
-      throw new AuthenticationError('Token tidak valid');
-    }
-
     const { id: credentialId } = request.auth.credentials;
     const playlists = await this._service.getPlaylists(credentialId);
 
@@ -45,10 +37,6 @@ class PlaylistsHandler {
   }
 
   async deletePlaylistByIdHandler(request, h) {
-    if (request.auth.credentials === null) {
-      throw new AuthenticationError('Token tidak valid');
-    }
-
     const { id: owner } = request.auth.credentials;
     const { id } = request.params;
 

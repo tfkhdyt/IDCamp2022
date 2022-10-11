@@ -2,10 +2,9 @@ const autoBind = require('auto-bind');
 const successResponse = require('../../utils/responses/success');
 
 class PlaylistSongActivitiesHandler {
-  constructor(playlistSongActivitiesService, playlistsService, validator) {
+  constructor(playlistSongActivitiesService, playlistsService) {
     this._playlistSongActivitiesService = playlistSongActivitiesService;
     this._playlistsService = playlistsService;
-    this._validator = validator;
 
     autoBind(this);
   }

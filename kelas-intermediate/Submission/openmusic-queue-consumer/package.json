@@ -1,0 +1,21 @@
+{
+  "name": "openmusic-queue-consumer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "tfkhdyt",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "auto-bind": "^5.0.1",
+    "dotenv": "^16.0.3",
+    "nodemailer": "^6.8.0",
+    "pg": "^8.8.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "eslint": "^8.25.0"
+  }
+}
