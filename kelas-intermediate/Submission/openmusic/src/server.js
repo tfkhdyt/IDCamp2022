@@ -151,7 +151,6 @@ const init = async () => {
     if (response instanceof Error) {
       const { message, statusCode } = response;
       if (response instanceof ClientError) {
-        console.error(message);
         return failResponse(h, {
           message,
           statusCode,
@@ -162,7 +161,7 @@ const init = async () => {
         return h.continue;
       }
 
-      console.error(message);
+      console.error(response);
       return errorResponse(h);
     }
 
