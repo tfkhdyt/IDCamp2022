@@ -35,7 +35,7 @@ describe('An add function', () => {
   });
 });
 
-describe('An substract function', () => {
+describe('A substract function', () => {
   it('should throw error when not given 2 parameter', () => {
     expect(() => MathBasic.substract()).toThrowError();
     expect(() => MathBasic.substract(1)).toThrowError();
