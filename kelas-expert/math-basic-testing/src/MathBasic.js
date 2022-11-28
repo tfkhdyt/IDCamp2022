@@ -4,7 +4,7 @@ const MathBasic = {
       throw new Error('fungsi add hanya menerima dua parameter');
     }
 
-    const [a, b] = args; 
+    const [a, b] = args;
 
     if (typeof a !== 'number' || typeof b !== 'number') {
       throw new Error('fungsi hanya menerima parameter number');
@@ -12,7 +12,19 @@ const MathBasic = {
 
     return a + b;
   },
-  substract() {},
+  substract(...args) {
+    if (args.length !== 2) {
+      throw new Error('fungsi substract hanya menerima dua parameter');
+    }
+
+    const [a, b] = args;
+
+    if (typeof a !== 'number' || typeof b !== 'number') {
+      throw new Error('fungsi hanya menerima parameter number');
+    }
+
+    return a - b;
+  },
   multiply() {},
   divide() {},
 };
