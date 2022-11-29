@@ -10,16 +10,10 @@ describe('A FigureCalculator', () => {
     expect(figureCalculator).toHaveProperty('calculateTrianglePerimeter');
     expect(figureCalculator).toHaveProperty('calculateTriangleArea');
 
-    expect(figureCalculator.calculateRectanglePerimeter).toBeInstanceOf(
-      Function
-    );
+    expect(figureCalculator.calculateRectanglePerimeter).toBeInstanceOf(Function);
     expect(figureCalculator.calculateRectangleArea).toBeInstanceOf(Function);
-    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(
-      Function
-    );
-    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(
-      Function
-    );
+    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(Function);
+    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(Function);
   });
 });
 
@@ -27,27 +21,17 @@ describe('A calculateRectanglePerimeter function', () => {
   it('should throw error when not given 2 parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() => figureCalculator.calculateRectanglePerimeter()).toThrowError();
-    expect(() =>
-      figureCalculator.calculateRectanglePerimeter(1)
-    ).toThrowError();
-    expect(() =>
-      figureCalculator.calculateRectanglePerimeter(1, 2, 3)
-    ).toThrowError();
+    expect(() => figureCalculator.calculateRectanglePerimeter()).toThrow();
+    expect(() => figureCalculator.calculateRectanglePerimeter(1)).toThrow();
+    expect(() => figureCalculator.calculateRectanglePerimeter(1, 2, 3)).toThrow();
   });
 
   it('should throw error when given with non-number parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() =>
-      figureCalculator.calculateRectanglePerimeter(true, {})
-    ).toThrowError();
-    expect(() =>
-      figureCalculator.calculateRectanglePerimeter(null, '2')
-    ).toThrowError();
-    expect(() =>
-      figureCalculator.calculateRectanglePerimeter([], {})
-    ).toThrowError();
+    expect(() => figureCalculator.calculateRectanglePerimeter(true, {})).toThrow();
+    expect(() => figureCalculator.calculateRectanglePerimeter(null, '2')).toThrow();
+    expect(() => figureCalculator.calculateRectanglePerimeter([], {})).toThrow();
   });
 
   it('should return correct value based on rectangle perimeter formula', () => {
@@ -72,25 +56,17 @@ describe('A calculateRectangleArea function', () => {
   it('should throw error when not given 2 parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() => figureCalculator.calculateRectangleArea()).toThrowError();
-    expect(() => figureCalculator.calculateRectangleArea(1)).toThrowError();
-    expect(() =>
-      figureCalculator.calculateRectangleArea(1, 2, 3)
-    ).toThrowError();
+    expect(() => figureCalculator.calculateRectangleArea()).toThrow();
+    expect(() => figureCalculator.calculateRectangleArea(1)).toThrow();
+    expect(() => figureCalculator.calculateRectangleArea(1, 2, 3)).toThrow();
   });
 
   it('should throw error when given with non-number parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() =>
-      figureCalculator.calculateRectangleArea(true, {})
-    ).toThrowError();
-    expect(() =>
-      figureCalculator.calculateRectangleArea(null, '2')
-    ).toThrowError();
-    expect(() =>
-      figureCalculator.calculateRectangleArea([], {})
-    ).toThrowError();
+    expect(() => figureCalculator.calculateRectangleArea(true, {})).toThrow();
+    expect(() => figureCalculator.calculateRectangleArea(null, '2')).toThrow();
+    expect(() => figureCalculator.calculateRectangleArea([], {})).toThrow();
   });
 
   it('should return correct value based on rectangle area formula', () => {
@@ -113,25 +89,17 @@ describe('A calculateTrianglePerimeter function', () => {
   it('should throw error when not given 3 parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() => figureCalculator.calculateTrianglePerimeter()).toThrowError();
-    expect(() => figureCalculator.calculateTrianglePerimeter(1)).toThrowError();
-    expect(() =>
-      figureCalculator.calculateTrianglePerimeter(1, 2)
-    ).toThrowError();
+    expect(() => figureCalculator.calculateTrianglePerimeter()).toThrow();
+    expect(() => figureCalculator.calculateTrianglePerimeter(1)).toThrow();
+    expect(() => figureCalculator.calculateTrianglePerimeter(1, 2)).toThrow();
   });
 
   it('should throw error when given with non-number parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() =>
-      figureCalculator.calculateTrianglePerimeter(true, {}, 'a')
-    ).toThrowError();
-    expect(() =>
-      figureCalculator.calculateTrianglePerimeter(null, '2', [])
-    ).toThrowError();
-    expect(() =>
-      figureCalculator.calculateTrianglePerimeter([], {}, false)
-    ).toThrowError();
+    expect(() => figureCalculator.calculateTrianglePerimeter(true, {}, 'a')).toThrow();
+    expect(() => figureCalculator.calculateTrianglePerimeter(null, '2', [])).toThrow();
+    expect(() => figureCalculator.calculateTrianglePerimeter([], {}, false)).toThrow();
   });
 
   it('should return correct value based on triangle perimeter formula', () => {
@@ -144,11 +112,7 @@ describe('A calculateTrianglePerimeter function', () => {
     const figureCalculator = new FigureCalculator(MathBasic);
 
     // Action
-    const result = figureCalculator.calculateTrianglePerimeter(
-      sideA,
-      sideB,
-      sideC
-    );
+    const result = figureCalculator.calculateTrianglePerimeter(sideA, sideB, sideC);
 
     // Assert
     expect(result).toEqual(30);

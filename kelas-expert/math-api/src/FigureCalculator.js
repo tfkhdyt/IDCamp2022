@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 class FigureCalculator {
   constructor(mathBasic) {
     this._mathBasic = mathBasic;
@@ -39,9 +40,9 @@ class FigureCalculator {
     const [a, b, c] = args;
 
     if (
-      typeof a !== 'number' ||
-      typeof b !== 'number' ||
-      typeof c !== 'number'
+      typeof a !== 'number'
+      || typeof b !== 'number'
+      || typeof c !== 'number'
     ) {
       throw new Error('fungsi hanya menerima parameter number');
     }
@@ -49,6 +50,7 @@ class FigureCalculator {
     const sumOfAB = this._mathBasic.add(a, b);
     return this._mathBasic.add(sumOfAB, c);
   }
+
   calculateTriangleArea() {}
 }
 
