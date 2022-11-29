@@ -24,17 +24,31 @@ class FigureCalculator {
 
     const [length, width] = args;
 
-    if (
-      typeof length !== 'number' ||
-      typeof width !== 'number' ||
-      typeof width !== 'number'
-    ) {
+    if (typeof length !== 'number' || typeof width !== 'number') {
       throw new Error('fungsi hanya menerima parameter number');
     }
 
     return this._mathBasic.multiply(length, width);
   }
-  calculateTrianglePerimeter() {}
+
+  calculateTrianglePerimeter(...args) {
+    if (args.length !== 3) {
+      throw new Error('fungsi hanya menerima 3 parameter');
+    }
+
+    const [a, b, c] = args;
+
+    if (
+      typeof a !== 'number' ||
+      typeof b !== 'number' ||
+      typeof c !== 'number'
+    ) {
+      throw new Error('fungsi hanya menerima parameter number');
+    }
+
+    const sumOfAB = this._mathBasic.add(a, b);
+    return this._mathBasic.add(sumOfAB, c);
+  }
   calculateTriangleArea() {}
 }
 
