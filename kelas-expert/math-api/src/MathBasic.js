@@ -12,9 +12,9 @@ const MathBasic = {
 
     return a + b;
   },
-  substract(...args) {
+  subtract(...args) {
     if (args.length !== 2) {
-      throw new Error('fungsi substract hanya menerima dua parameter');
+      throw new Error('fungsi subtract hanya menerima dua parameter');
     }
 
     const [a, b] = args;
