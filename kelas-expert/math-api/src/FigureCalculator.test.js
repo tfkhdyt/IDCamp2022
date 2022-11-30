@@ -10,10 +10,16 @@ describe('A FigureCalculator', () => {
     expect(figureCalculator).toHaveProperty('calculateTrianglePerimeter');
     expect(figureCalculator).toHaveProperty('calculateTriangleArea');
 
-    expect(figureCalculator.calculateRectanglePerimeter).toBeInstanceOf(Function);
+    expect(figureCalculator.calculateRectanglePerimeter).toBeInstanceOf(
+      Function
+    );
     expect(figureCalculator.calculateRectangleArea).toBeInstanceOf(Function);
-    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(Function);
-    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(Function);
+    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(
+      Function
+    );
+    expect(figureCalculator.calculateTrianglePerimeter).toBeInstanceOf(
+      Function
+    );
   });
 });
 
@@ -23,15 +29,23 @@ describe('A calculateRectanglePerimeter function', () => {
 
     expect(() => figureCalculator.calculateRectanglePerimeter()).toThrow();
     expect(() => figureCalculator.calculateRectanglePerimeter(1)).toThrow();
-    expect(() => figureCalculator.calculateRectanglePerimeter(1, 2, 3)).toThrow();
+    expect(() =>
+      figureCalculator.calculateRectanglePerimeter(1, 2, 3)
+    ).toThrow();
   });
 
   it('should throw error when given with non-number parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() => figureCalculator.calculateRectanglePerimeter(true, {})).toThrow();
-    expect(() => figureCalculator.calculateRectanglePerimeter(null, '2')).toThrow();
-    expect(() => figureCalculator.calculateRectanglePerimeter([], {})).toThrow();
+    expect(() =>
+      figureCalculator.calculateRectanglePerimeter(true, {})
+    ).toThrow();
+    expect(() =>
+      figureCalculator.calculateRectanglePerimeter(null, '2')
+    ).toThrow();
+    expect(() =>
+      figureCalculator.calculateRectanglePerimeter([], {})
+    ).toThrow();
   });
 
   it('should return correct value based on rectangle perimeter formula', () => {
@@ -97,9 +111,15 @@ describe('A calculateTrianglePerimeter function', () => {
   it('should throw error when given with non-number parameters', () => {
     const figureCalculator = new FigureCalculator({});
 
-    expect(() => figureCalculator.calculateTrianglePerimeter(true, {}, 'a')).toThrow();
-    expect(() => figureCalculator.calculateTrianglePerimeter(null, '2', [])).toThrow();
-    expect(() => figureCalculator.calculateTrianglePerimeter([], {}, false)).toThrow();
+    expect(() =>
+      figureCalculator.calculateTrianglePerimeter(true, {}, 'a')
+    ).toThrow();
+    expect(() =>
+      figureCalculator.calculateTrianglePerimeter(null, '2', [])
+    ).toThrow();
+    expect(() =>
+      figureCalculator.calculateTrianglePerimeter([], {}, false)
+    ).toThrow();
   });
 
   it('should return correct value based on triangle perimeter formula', () => {
@@ -112,11 +132,50 @@ describe('A calculateTrianglePerimeter function', () => {
     const figureCalculator = new FigureCalculator(MathBasic);
 
     // Action
-    const result = figureCalculator.calculateTrianglePerimeter(sideA, sideB, sideC);
+    const result = figureCalculator.calculateTrianglePerimeter(
+      sideA,
+      sideB,
+      sideC
+    );
 
     // Assert
     expect(result).toEqual(30);
     expect(spyAdd).toHaveBeenCalledWith(10, 10);
     expect(spyAdd).toHaveBeenCalledWith(20, 10);
+  });
+});
+
+describe('A calculateTriangleArea function', () => {
+  it('should throw error when not given 2 parameters', () => {
+    const figureCalculator = new FigureCalculator({});
+
+    expect(() => figureCalculator.calculateTriangleArea()).toThrow();
+    expect(() => figureCalculator.calculateTriangleArea(1)).toThrow();
+    expect(() => figureCalculator.calculateTriangleArea(1, 2, 3)).toThrow();
+  });
+
+  it('should throw error when given with non-number parameters', () => {
+    const figureCalculator = new FigureCalculator({});
+
+    expect(() => figureCalculator.calculateTriangleArea(true, {})).toThrow();
+    expect(() => figureCalculator.calculateTriangleArea(null, '2')).toThrow();
+    expect(() => figureCalculator.calculateTriangleArea([], {})).toThrow();
+  });
+
+  it('should return correct value based on triangle area formula', () => {
+    // Arrange
+    const base = 10;
+    const height = 20;
+
+    const spyMultiply = jest.spyOn(MathBasic, 'multiply');
+    const figureCalculator = new FigureCalculator(MathBasic);
+
+    // Action
+    const result = figureCalculator.calculateTriangleArea(base, height);
+
+    // Assert
+    expect(result).toEqual(100);
+    expect(spyMultiply).toHaveBeenCalledWith(10, 20);
+    expect(spyMultiply).toHaveBeenCalledWith(200, 0.5);
   });
 });
