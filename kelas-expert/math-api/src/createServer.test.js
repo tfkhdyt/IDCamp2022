@@ -67,4 +67,26 @@ describe('A HTTP Server', () => {
       expect(spyMultiply).toHaveBeenCalledWith(a, b);
     });
   });
+
+  describe('when GET /divide', () => {
+    it('should respond with a status code of 200 and the payload value is division result of a and b correctly', async () => {
+      // arrange
+      const a = 12;
+      const b = 6;
+      const spyDivide = jest.spyOn(MathBasic, 'divide');
+      const server = createServer({ mathBasic: MathBasic });
+
+      // action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/divide/${a}/${b}`,
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.value).toEqual(2);
+      expect(spyDivide).toHaveBeenCalledWith(a, b);
+    });
+  });
 });
