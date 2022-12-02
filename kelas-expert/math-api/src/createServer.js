@@ -25,6 +25,15 @@ const createServer = ({ mathBasic }) => {
         return { value };
       },
     },
+    {
+      method: 'GET',
+      path: '/multiply/{a}/{b}',
+      handler: (req) => {
+        const { a, b } = req.params;
+        const value = mathBasic.multiply(Number(a), Number(b));
+        return { value };
+      },
+    },
   ]);
 
   return server;
