@@ -34,6 +34,15 @@ const createServer = ({ mathBasic }) => {
         return { value };
       },
     },
+    {
+      method: 'GET',
+      path: '/divide/{a}/{b}',
+      handler: (req) => {
+        const { a, b } = req.params;
+        const value = mathBasic.divide(Number(a), Number(b));
+        return { value };
+      },
+    },
   ]);
 
   return server;
