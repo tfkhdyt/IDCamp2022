@@ -4,6 +4,9 @@ const createServer = ({ mathBasic, figureCalculator }) => {
   const server = Hapi.server({
     host: 'localhost',
     port: 5000,
+    router: {
+      stripTrailingSlash: true,
+    },
   });
 
   server.route([
@@ -13,6 +16,7 @@ const createServer = ({ mathBasic, figureCalculator }) => {
       handler: (req) => {
         const { a, b } = req.params;
         const value = mathBasic.add(Number(a), Number(b));
+        console.log({ value });
         return { value };
       },
     },
