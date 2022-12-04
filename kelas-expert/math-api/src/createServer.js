@@ -16,7 +16,6 @@ const createServer = ({ mathBasic, figureCalculator }) => {
       handler: (req) => {
         const { a, b } = req.params;
         const value = mathBasic.add(Number(a), Number(b));
-        console.log({ value });
         return { value };
       },
     },
