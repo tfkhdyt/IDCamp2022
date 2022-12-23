@@ -2,24 +2,16 @@ class NewThread {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const { id, title, body, owner } = payload;
-
-    if (id) {
-      this.id = id;
-    }
+    const { title, body, owner } = payload;
 
     this.title = title;
     this.body = body;
     this.owner = owner;
   }
 
-  _verifyPayload({ id, title, body, owner }) {
+  _verifyPayload({ title, body, owner }) {
     if (!title || !body || !owner) {
       throw new Error('NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
-    }
-
-    if (id && typeof id !== 'string') {
-      throw new Error('NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
 
     if (
