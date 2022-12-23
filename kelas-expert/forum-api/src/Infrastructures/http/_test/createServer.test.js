@@ -17,7 +17,7 @@ describe('HTTP server', () => {
   describe('when POST /threads', () => {
     it('should response 201 and persisted thread', async () => {
       // arrange
-      await UsersTableTestHelper.addUser({ username: 'tfkhdyt ' });
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
       const requestPayload = {
         title: 'ini judul',
         body: 'ini body',
@@ -37,6 +37,61 @@ describe('HTTP server', () => {
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.addedThread).toBeDefined();
+    });
+
+    it('should response 400 when request payload not contain needed property', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      const requestPayload = {
+        title: 'ini judul',
+        body: 'ini body',
+      };
+      const server = await createServer(container);
+
+      // action
+      const response = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: requestPayload,
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual(
+        'tidak dapat membuat thread baru karena properti yang dibutuhkan tidak ada'
+      );
+    });
+
+    it('should response 400 when request payload not meet data type specification', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      const requestPayload = {
+        title: 'ini judul',
+        body: 'ini body',
+        owner: ['user-123'],
+      };
+      const server = await createServer(container);
+
+      // action
+      const response = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: requestPayload,
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual(
+        'tidak dapat membuat thread baru karena tipe data tidak sesuai'
+      );
+    });
+
+    it('should response 400 when username more than 50 characters', async () => {
+      // todo
     });
   });
 
