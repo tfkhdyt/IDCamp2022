@@ -1,6 +1,45 @@
+const pool = require('../../database/postgres/pool');
+const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const container = require('../../container');
 const createServer = require('../createServer');
 
 describe('HTTP server', () => {
+  afterAll(async () => {
+    await pool.end();
+  });
+
+  afterEach(async () => {
+    await ThreadsTableTestHelper.cleanTable();
+    await UsersTableTestHelper.cleanTable();
+  });
+
+  describe('when POST /threads', () => {
+    it('should response 201 and persisted thread', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt ' });
+      const requestPayload = {
+        title: 'ini judul',
+        body: 'ini body',
+        owner: 'user-123',
+      };
+      const server = await createServer(container);
+
+      // action
+      const response = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: requestPayload,
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(201);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.addedThread).toBeDefined();
+    });
+  });
+
   it('should response 404 when request unregistered route', async () => {
     // Arrange
     const server = await createServer({});
