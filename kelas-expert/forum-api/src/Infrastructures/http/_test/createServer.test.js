@@ -91,7 +91,29 @@ describe('HTTP server', () => {
     });
 
     it('should response 400 when username more than 50 characters', async () => {
-      // todo
+      // arrange
+      const requestPayload = {
+        title:
+          'inijudulinijudulinijudulinijudulinijudulinijudulinijudulinijudulinijudul',
+        body: 'ini body',
+        owner: 'user-123',
+      };
+      const server = await createServer(container);
+
+      // action
+      const response = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: requestPayload,
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual(
+        'tidak dapat membuat thread baru karena karakter title melebihi batas limit'
+      );
     });
   });
 

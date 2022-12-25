@@ -39,6 +39,32 @@ describe('DomainErrorTranslator', () => {
         'tidak dapat membuat user baru karena username mengandung karakter terlarang'
       )
     );
+
+    expect(
+      DomainErrorTranslator.translate(
+        new Error('NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY')
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        'tidak dapat membuat thread baru karena properti yang dibutuhkan tidak ada'
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error('NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION')
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        'tidak dapat membuat thread baru karena tipe data tidak sesuai'
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(new Error('NEW_THREAD.TITLE_LIMIT_CHAR'))
+    ).toStrictEqual(
+      new InvariantError(
+        'tidak dapat membuat thread baru karena karakter title melebihi batas limit'
+      )
+    );
   });
 
   it('should return original error when error message is not needed to translate', () => {
