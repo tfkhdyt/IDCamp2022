@@ -3,6 +3,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const container = require('../../container');
 const createServer = require('../createServer');
+const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 
 describe('HTTP server', () => {
   afterAll(async () => {
@@ -12,24 +13,32 @@ describe('HTTP server', () => {
   afterEach(async () => {
     await ThreadsTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
+    await AuthenticationsTableTestHelper.cleanTable();
   });
 
   describe('when POST /threads', () => {
     it('should response 201 and persisted thread', async () => {
       // arrange
-      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      const loginPayload = { username: 'tfkhdyt', password: 'secret' };
+      const accessToken = await AuthenticationsTableTestHelper.login(
+        loginPayload
+      );
+      const server = await createServer(container);
+
       const requestPayload = {
         title: 'ini judul',
         body: 'ini body',
         owner: 'user-123',
       };
-      const server = await createServer(container);
 
       // action
       const response = await server.inject({
         method: 'POST',
         url: '/threads',
         payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       // assert
@@ -41,10 +50,12 @@ describe('HTTP server', () => {
 
     it('should response 400 when request payload not contain needed property', async () => {
       // arrange
-      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      const loginPayload = { username: 'tfkhdyt', password: 'secret' };
+      const accessToken = await AuthenticationsTableTestHelper.login(
+        loginPayload
+      );
       const requestPayload = {
         title: 'ini judul',
-        body: 'ini body',
       };
       const server = await createServer(container);
 
@@ -53,6 +64,9 @@ describe('HTTP server', () => {
         method: 'POST',
         url: '/threads',
         payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       // assert
@@ -66,11 +80,13 @@ describe('HTTP server', () => {
 
     it('should response 400 when request payload not meet data type specification', async () => {
       // arrange
-      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      const loginPayload = { username: 'tfkhdyt', password: 'secret' };
+      const accessToken = await AuthenticationsTableTestHelper.login(
+        loginPayload
+      );
       const requestPayload = {
         title: 'ini judul',
-        body: 'ini body',
-        owner: ['user-123'],
+        body: true,
       };
       const server = await createServer(container);
 
@@ -79,6 +95,9 @@ describe('HTTP server', () => {
         method: 'POST',
         url: '/threads',
         payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       // assert
@@ -92,11 +111,14 @@ describe('HTTP server', () => {
 
     it('should response 400 when username more than 50 characters', async () => {
       // arrange
+      const loginPayload = { username: 'tfkhdyt', password: 'secret' };
+      const accessToken = await AuthenticationsTableTestHelper.login(
+        loginPayload
+      );
       const requestPayload = {
         title:
           'inijudulinijudulinijudulinijudulinijudulinijudulinijudulinijudulinijudul',
         body: 'ini body',
-        owner: 'user-123',
       };
       const server = await createServer(container);
 
@@ -105,6 +127,9 @@ describe('HTTP server', () => {
         method: 'POST',
         url: '/threads',
         payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       // assert

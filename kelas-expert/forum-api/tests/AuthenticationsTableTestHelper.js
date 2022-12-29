@@ -1,5 +1,7 @@
 /* istanbul ignore file */
+const container = require('../src/Infrastructures/container');
 const pool = require('../src/Infrastructures/database/postgres/pool');
+const createServer = require('../src/Infrastructures/http/createServer');
 
 const AuthenticationsTableTestHelper = {
   async addToken(token) {
@@ -23,6 +25,36 @@ const AuthenticationsTableTestHelper = {
   },
   async cleanTable() {
     await pool.query('DELETE FROM authentications WHERE 1=1');
+  },
+
+  async login({
+    username = 'tfkhdyt',
+    password = 'secret',
+    fullname = 'Taufik Hidayat',
+  }) {
+    const server = await createServer(container);
+    await server.inject({
+      method: 'POST',
+      url: '/users',
+      payload: {
+        username,
+        password,
+        fullname,
+      },
+    });
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/authentications',
+      payload: {
+        username,
+        password,
+      },
+    });
+
+    const responseJson = JSON.parse(response.payload);
+
+    return responseJson.data.accessToken;
   },
 };
 
