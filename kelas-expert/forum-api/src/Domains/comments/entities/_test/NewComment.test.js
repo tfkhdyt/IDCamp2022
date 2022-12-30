@@ -15,6 +15,8 @@ describe('a NewThread entities', () => {
     // arrange
     const payload = {
       content: true,
+      owner: 123,
+      threadId: ['abc'],
     };
 
     // Action and Assert
@@ -27,12 +29,16 @@ describe('a NewThread entities', () => {
     // arrange
     const payload = {
       content: 'ini komentar',
+      owner: 'user-123',
+      threadId: 'thread-123',
     };
 
     // action
-    const { content } = new NewComment(payload);
+    const { content, owner, threadId } = new NewComment(payload);
 
     // assert
     expect(content).toEqual(payload.content);
+    expect(owner).toEqual(payload.owner);
+    expect(threadId).toEqual(payload.threadId);
   });
 });
