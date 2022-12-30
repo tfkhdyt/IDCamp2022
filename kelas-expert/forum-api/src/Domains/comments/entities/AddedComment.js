@@ -9,11 +9,11 @@ class AddedComment {
     this.isDeleted = isDeleted;
     this.owner = owner;
     this.threadId = threadId;
-    this.date = date;
+    if (date) this.date = date;
   }
 
-  _verifyPayload({ id, content, isDeleted, owner, threadId, date }) {
-    if (!id || !content || !owner || !threadId || !date) {
+  _verifyPayload({ id, content, isDeleted, owner, threadId }) {
+    if (!id || !content || !owner || !threadId) {
       throw new Error('ADDED_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -22,8 +22,7 @@ class AddedComment {
       typeof content !== 'string' ||
       typeof isDeleted !== 'boolean' ||
       typeof owner !== 'string' ||
-      typeof threadId !== 'string' ||
-      typeof date !== 'string'
+      typeof threadId !== 'string'
     ) {
       throw new Error('ADDED_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
