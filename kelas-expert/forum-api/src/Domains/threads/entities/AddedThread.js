@@ -12,7 +12,7 @@ class AddedThread {
   }
 
   _verifyPayload({ id, title, body, owner }) {
-    if (!id || !title || !body || !owner /* || !date */) {
+    if (!id || !title || !body || !owner) {
       throw new Error('ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -21,7 +21,6 @@ class AddedThread {
       typeof title !== 'string' ||
       typeof body !== 'string' ||
       typeof owner !== 'string'
-      // typeof date !== 'string'
     ) {
       throw new Error('ADDED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
