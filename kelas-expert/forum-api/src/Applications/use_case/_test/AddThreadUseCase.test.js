@@ -33,10 +33,10 @@ describe('AddThreadUseCase', () => {
     });
 
     // action
-    const newThread = await getThreadUseCase.execute(useCasePayload);
+    const addedThread = await getThreadUseCase.execute(useCasePayload);
 
     // assert
-    expect(newThread).toMatchObject(expectedAddedThread);
+    expect(addedThread).toMatchObject(expectedAddedThread);
     expect(mockThreadRepository.addThread).toBeCalledWith(
       new NewThread({
         title: useCasePayload.title,
