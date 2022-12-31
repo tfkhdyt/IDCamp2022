@@ -22,16 +22,16 @@ describe('/threads/{threadId}/comments endpoint', () => {
     it('should response 201 and persisted comment', async () => {
       // arrange
       const loginPayload = { username: 'tfkhdyt', password: 'secret' };
-      const accessToken = await AuthenticationsTableTestHelper.login(
-        loginPayload
-      );
-      await ThreadsTableTestHelper.addThread({});
+      const { accessToken, userId } =
+        await AuthenticationsTableTestHelper.login(loginPayload);
+      await ThreadsTableTestHelper.addThread({
+        title: 'sebuah thread',
+        owner: userId,
+      });
       const server = await createServer(container);
 
       const requestPayload = {
         content: 'ini konten',
-        owner: 'user-123',
-        threadId: 'thread-123',
       };
 
       // action
@@ -54,15 +54,15 @@ describe('/threads/{threadId}/comments endpoint', () => {
     it('should response 400 when request payload not contain needed property', async () => {
       // arrange
       const loginPayload = { username: 'tfkhdyt', password: 'secret' };
-      const accessToken = await AuthenticationsTableTestHelper.login(
-        loginPayload
-      );
+      const { accessToken, userId } =
+        await AuthenticationsTableTestHelper.login(loginPayload);
+      await ThreadsTableTestHelper.addThread({
+        title: 'sebuah thread',
+        owner: userId,
+      });
       const server = await createServer(container);
 
-      const requestPayload = {
-        content: 'ini konten',
-        owner: 'user-123',
-      };
+      const requestPayload = {};
 
       // action
       const response = await server.inject({
@@ -86,16 +86,16 @@ describe('/threads/{threadId}/comments endpoint', () => {
     it('should response 400 when request payload not meet data type specification', async () => {
       // arrange
       const loginPayload = { username: 'tfkhdyt', password: 'secret' };
-      const accessToken = await AuthenticationsTableTestHelper.login(
-        loginPayload
-      );
-      await ThreadsTableTestHelper.addThread({});
+      const { accessToken, userId } =
+        await AuthenticationsTableTestHelper.login(loginPayload);
+      await ThreadsTableTestHelper.addThread({
+        title: 'sebuah thread',
+        owner: userId,
+      });
       const server = await createServer(container);
 
       const requestPayload = {
-        content: 'ini konten',
-        owner: 'user-123',
-        threadId: 123,
+        content: ['ini konten'],
       };
 
       // action

@@ -20,7 +20,7 @@ describe('/threads endpoint', () => {
     it('should response 201 and persisted thread', async () => {
       // arrange
       const loginPayload = { username: 'tfkhdyt', password: 'secret' };
-      const accessToken = await AuthenticationsTableTestHelper.login(
+      const { accessToken } = await AuthenticationsTableTestHelper.login(
         loginPayload
       );
       const server = await createServer(container);
@@ -28,7 +28,6 @@ describe('/threads endpoint', () => {
       const requestPayload = {
         title: 'ini judul',
         body: 'ini body',
-        owner: 'user-123',
       };
 
       // action
@@ -51,7 +50,7 @@ describe('/threads endpoint', () => {
     it('should response 400 when request payload not contain needed property', async () => {
       // arrange
       const loginPayload = { username: 'tfkhdyt', password: 'secret' };
-      const accessToken = await AuthenticationsTableTestHelper.login(
+      const { accessToken } = await AuthenticationsTableTestHelper.login(
         loginPayload
       );
       const requestPayload = {
@@ -81,7 +80,7 @@ describe('/threads endpoint', () => {
     it('should response 400 when request payload not meet data type specification', async () => {
       // arrange
       const loginPayload = { username: 'tfkhdyt', password: 'secret' };
-      const accessToken = await AuthenticationsTableTestHelper.login(
+      const { accessToken } = await AuthenticationsTableTestHelper.login(
         loginPayload
       );
       const requestPayload = {
@@ -112,7 +111,7 @@ describe('/threads endpoint', () => {
     it('should response 400 when username more than 50 characters', async () => {
       // arrange
       const loginPayload = { username: 'tfkhdyt', password: 'secret' };
-      const accessToken = await AuthenticationsTableTestHelper.login(
+      const { accessToken } = await AuthenticationsTableTestHelper.login(
         loginPayload
       );
       const requestPayload = {

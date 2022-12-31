@@ -33,7 +33,7 @@ const AuthenticationsTableTestHelper = {
     fullname = 'Taufik Hidayat',
   }) {
     const server = await createServer(container);
-    await server.inject({
+    const response0 = await server.inject({
       method: 'POST',
       url: '/users',
       payload: {
@@ -42,6 +42,10 @@ const AuthenticationsTableTestHelper = {
         fullname,
       },
     });
+
+    const userId = JSON.parse(response0.payload).data.addedUser.id;
+
+    console.log({ userId });
 
     const response = await server.inject({
       method: 'POST',
@@ -54,7 +58,7 @@ const AuthenticationsTableTestHelper = {
 
     const responseJson = JSON.parse(response.payload);
 
-    return responseJson.data.accessToken;
+    return { accessToken: responseJson.data.accessToken, userId };
   },
 };
 
