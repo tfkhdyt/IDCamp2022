@@ -45,8 +45,6 @@ const AuthenticationsTableTestHelper = {
 
     const userId = JSON.parse(response0.payload).data.addedUser.id;
 
-    console.log({ userId });
-
     const response = await server.inject({
       method: 'POST',
       url: '/authentications',

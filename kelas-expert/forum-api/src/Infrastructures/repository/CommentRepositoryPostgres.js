@@ -19,8 +19,6 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
 
-    console.log({ result: result.rows[0] });
-
     return new AddedComment({
       ...result.rows[0],
       threadId: result.rows[0].thread_id,
