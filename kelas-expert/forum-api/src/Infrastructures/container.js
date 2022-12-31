@@ -17,7 +17,7 @@ const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const ThreadRepository = require('../Domains/threads/ThreadRepository');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
-const CommentRepository = require('../Domains/threads/CommentRepository');
+const CommentRepository = require('../Domains/comments/CommentRepository');
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
 
 // use case
@@ -141,27 +141,6 @@ container.register([
           name: 'threadRepository',
           internal: ThreadRepository.name,
         },
-        {
-          name: 'passwordHash',
-          internal: PasswordHash.name,
-        },
-      ],
-    },
-  },
-  {
-    key: AddCommentUseCase.name,
-    Class: AddCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name,
-        },
-        {
-          name: 'passwordHash',
-          internal: PasswordHash.name,
-        },
       ],
     },
   },
@@ -216,6 +195,23 @@ container.register([
         {
           name: 'authenticationTokenManager',
           internal: AuthenticationTokenManager.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddCommentUseCase.name,
+    Class: AddCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
         },
       ],
     },
