@@ -2,9 +2,10 @@ const NewComment = require('../../../Domains/comments/entities/NewComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const AddCommentUseCase = require('../AddCommentUseCase');
+const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 
 describe('AddCommentUseCase', () => {
-  it('should orchestrating the add user action correctly', async () => {
+  it('should orchestrating the add comment action correctly', async () => {
     // arrange
     const useCasePayload = {
       content: 'ini konten',
@@ -21,15 +22,20 @@ describe('AddCommentUseCase', () => {
 
     /** creating dependency of use case */
     const mockCommentRepository = new CommentRepository();
+    const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
     mockCommentRepository.addComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(expectedAddedComment));
+    mockThreadRepository.validate = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve());
 
     /** creating use case instance */
     const getCommentUseCase = new AddCommentUseCase({
       commentRepository: mockCommentRepository,
+      threadRepository: mockThreadRepository,
     });
 
     // action
