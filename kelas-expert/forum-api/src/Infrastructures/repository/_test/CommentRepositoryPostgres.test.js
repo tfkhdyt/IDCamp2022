@@ -5,6 +5,8 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const NewComment = require('../../../Domains/comments/entities/NewComment');
 const pool = require('../../database/postgres/pool');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
@@ -107,6 +109,65 @@ describe('CommentRepositoryPostgres', () => {
           owner,
         })
       );
+    });
+
+    it('should throw not found error', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      const commentId = 'comment-xxx';
+      const threadId = 'thread-xxx';
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action & assert
+      await expect(
+        commentRepositoryPostgres.findCommentById(commentId, threadId)
+      ).rejects.toThrow(NotFoundError);
+    });
+  });
+
+  describe('validateCommentOwner function', () => {
+    it('should not throw authorization error', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      const commentId = 'comment-123';
+      const owner = 'user-123';
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action & assert
+      await expect(
+        commentRepositoryPostgres.validateCommentOwner(commentId, owner)
+      ).resolves.not.toThrow(AuthorizationError);
+    });
+
+    it('should throw authorization error', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      const commentId = 'comment-123';
+      const owner = 'user-xxx';
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action & assert
+      await expect(
+        commentRepositoryPostgres.validateCommentOwner(commentId, owner)
+      ).rejects.toThrow(AuthorizationError);
     });
   });
 });
