@@ -1,5 +1,6 @@
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -18,6 +19,25 @@ class CommentRepositoryPostgres extends CommentRepository {
     };
 
     const result = await this._pool.query(query);
+
+    return new AddedComment({
+      ...result.rows[0],
+      threadId: result.rows[0].thread_id,
+      isDeleted: result.rows[0].is_deleted,
+    });
+  }
+
+  async findCommentById(commentId, threadId) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1 AND thread_id = $2',
+      values: [commentId, threadId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('comment tidak ditemukan');
+    }
 
     return new AddedComment({
       ...result.rows[0],
