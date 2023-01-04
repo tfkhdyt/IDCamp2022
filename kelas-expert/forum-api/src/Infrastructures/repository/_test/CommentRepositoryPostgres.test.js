@@ -7,6 +7,7 @@ const pool = require('../../database/postgres/pool');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
@@ -168,6 +169,44 @@ describe('CommentRepositoryPostgres', () => {
       await expect(
         commentRepositoryPostgres.validateCommentOwner(commentId, owner)
       ).rejects.toThrow(AuthorizationError);
+    });
+  });
+
+  describe('deleteComment function', () => {
+    it('should delete comment successfully', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      const commentId = 'comment-123';
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action & assert
+      await expect(
+        commentRepositoryPostgres.deleteComment(commentId)
+      ).resolves.not.toThrow(InvariantError);
+    });
+
+    it('should throw InvariantError', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      const commentId = 'comment-xxx';
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action & assert
+      await expect(
+        commentRepositoryPostgres.deleteComment(commentId)
+      ).rejects.toThrow(InvariantError);
     });
   });
 });
