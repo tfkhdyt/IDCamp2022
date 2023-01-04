@@ -189,6 +189,10 @@ describe('CommentRepositoryPostgres', () => {
       await expect(
         commentRepositoryPostgres.deleteComment(commentId)
       ).resolves.not.toThrow(InvariantError);
+
+      const comment = await CommentsTableTestHelper.findCommentById(commentId);
+
+      expect(comment[0].is_deleted).toEqual(true);
     });
 
     it('should throw InvariantError', async () => {
