@@ -117,4 +117,84 @@ describe('/threads/{threadId}/comments endpoint', () => {
       );
     });
   });
+
+  describe('when DELETE /threads/{threadId}/comments/{commentId}', () => {
+    it('should 200 response and deleted correctly', async () => {
+      // arrange
+      const loginPayload = { username: 'tfkhdyt', password: 'secret' };
+      const { accessToken, userId } =
+        await AuthenticationsTableTestHelper.login(loginPayload);
+      await ThreadsTableTestHelper.addThread({
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({ owner: userId });
+      const server = await createServer(container);
+
+      // action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-123/comments/comment-123',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+
+    it('should response 404 when deleting not found thread', async () => {
+      // arrange
+      const loginPayload = { username: 'tfkhdyt', password: 'secret' };
+      const { userId, accessToken } =
+        await AuthenticationsTableTestHelper.login(loginPayload);
+      await ThreadsTableTestHelper.addThread({
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({ owner: userId });
+      const server = await createServer(container);
+
+      // action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-xxx/comments/comment-123',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+    });
+
+    it('should response 404 when deleting not found comment', async () => {
+      // arrange
+      const loginPayload = { username: 'tfkhdyt', password: 'secret' };
+      const { userId, accessToken } =
+        await AuthenticationsTableTestHelper.login(loginPayload);
+      await ThreadsTableTestHelper.addThread({
+        owner: userId,
+      });
+      await CommentsTableTestHelper.addComment({ owner: userId });
+      const server = await createServer(container);
+
+      // action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-123/comments/comment-xxx',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+    });
+  });
 });
