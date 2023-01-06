@@ -48,10 +48,10 @@ class CommentRepositoryPostgres extends CommentRepository {
     });
   }
 
-  async validateCommentOwner(commentId, owner) {
+  async validateCommentOwner(commentId, threadId, owner) {
     const query = {
-      text: 'SELECT * FROM comments WHERE id = $1 AND owner = $2',
-      values: [commentId, owner],
+      text: 'SELECT * FROM comments WHERE id = $1 AND owner = $2 AND thread_id = $3 AND is_deleted = FALSE',
+      values: [commentId, owner, threadId],
     };
 
     const result = await this._pool.query(query);

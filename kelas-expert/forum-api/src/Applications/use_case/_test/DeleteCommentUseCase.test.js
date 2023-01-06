@@ -45,16 +45,16 @@ describe('DeleteCommentUseCase', () => {
     });
 
     // action
-    const deletedComment = await getCommentUseCase.execute(useCasePayload);
+    await getCommentUseCase.execute(useCasePayload);
 
     // assert
-    expect(deletedComment).toStrictEqual(expectedResult);
     expect(mockCommentRepository.findCommentById).toBeCalledWith(
       useCasePayload.commentId,
       useCasePayload.threadId
     );
     expect(mockCommentRepository.validateCommentOwner).toBeCalledWith(
       useCasePayload.commentId,
+      useCasePayload.threadId,
       useCasePayload.owner
     );
     expect(mockCommentRepository.deleteComment).toBeCalledWith(

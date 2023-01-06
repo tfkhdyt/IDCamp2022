@@ -139,6 +139,7 @@ describe('CommentRepositoryPostgres', () => {
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
       const commentId = 'comment-123';
+      const threadId = 'thread-123';
       const owner = 'user-123';
       const fakeIdGenerator = () => '123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
@@ -148,7 +149,11 @@ describe('CommentRepositoryPostgres', () => {
 
       // action & assert
       await expect(
-        commentRepositoryPostgres.validateCommentOwner(commentId, owner)
+        commentRepositoryPostgres.validateCommentOwner(
+          commentId,
+          threadId,
+          owner
+        )
       ).resolves.not.toThrow(AuthorizationError);
     });
 
