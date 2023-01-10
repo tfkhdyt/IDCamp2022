@@ -26,6 +26,14 @@ const CommentsTableTestHelper = {
     return result.rows;
   },
 
+  async deleteComment(id) {
+    const query = {
+      text: 'UPDATE comments SET is_deleted = TRUE WHERE id = $1',
+      values: [id],
+    };
+    pool.query(query);
+  },
+
   async cleanTable() {
     await pool.query('TRUNCATE TABLE comments CASCADE');
   },
