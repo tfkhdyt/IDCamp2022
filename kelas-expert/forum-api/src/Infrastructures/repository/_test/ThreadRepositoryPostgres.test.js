@@ -1,13 +1,19 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const NewThread = require('../../../Domains/threads/entities/NewThread');
+
 const pool = require('../../database/postgres/pool');
+
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
 describe('ThreadRepositoryPostgres', () => {
   afterEach(async () => {
+    await CommentsTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
   });
@@ -92,6 +98,86 @@ describe('ThreadRepositoryPostgres', () => {
       await expect(
         threadRepositoryPostgres.validate('thread-123')
       ).resolves.not.toThrowError(NotFoundError);
+    });
+  });
+
+  describe('findThreadById function', () => {
+    it('should return correct thread', async () => {
+      // arrange
+      const expectedThread = {
+        id: 'thread-123',
+        title: 'sebuah thread',
+        body: 'sebuah body thread',
+        username: 'tfkhdyt',
+      };
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      await ThreadsTableTestHelper.addThread({
+        title: 'sebuah thread',
+        body: 'sebuah body thread',
+      });
+      await CommentsTableTestHelper.addComment({ title: 'sebuah comment' });
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      // action
+      const thread = await threadRepositoryPostgres.findThreadById(
+        'thread-123'
+      );
+
+      // assert
+      expect(thread.id).toEqual(expectedThread.id);
+      expect(thread.title).toEqual(expectedThread.title);
+      expect(thread.body).toEqual(expectedThread.body);
+      expect(thread.username).toEqual(expectedThread.username);
+      expect(thread.comments).toBeDefined();
+      expect(thread.comments[0].content).not.toEqual(
+        '**komentar telah dihapus**'
+      );
+    });
+
+    it('should return correct thread, with deleted comment', async () => {
+      // arrange
+      const expectedThread = {
+        id: 'thread-123',
+        title: 'sebuah thread',
+        body: 'sebuah body thread',
+        username: 'tfkhdyt',
+      };
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      await ThreadsTableTestHelper.addThread({
+        title: 'sebuah thread',
+        body: 'sebuah body thread',
+      });
+      await CommentsTableTestHelper.addComment({ title: 'sebuah comment' });
+      await CommentsTableTestHelper.deleteComment('comment-123');
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      // action
+      const thread = await threadRepositoryPostgres.findThreadById(
+        'thread-123'
+      );
+
+      // assert
+      expect(thread.id).toEqual(expectedThread.id);
+      expect(thread.title).toEqual(expectedThread.title);
+      expect(thread.body).toEqual(expectedThread.body);
+      expect(thread.username).toEqual(expectedThread.username);
+      expect(thread.comments).toBeDefined();
+      expect(thread.comments[0].content).toEqual('**komentar telah dihapus**');
+    });
+
+    it('should throw not found error', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      await ThreadsTableTestHelper.addThread({
+        title: 'sebuah thread',
+        body: 'sebuah body thread',
+      });
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      // action and assert
+      await expect(
+        threadRepositoryPostgres.findThreadById('thread-xxx')
+      ).rejects.toThrow(NotFoundError);
     });
   });
 });
