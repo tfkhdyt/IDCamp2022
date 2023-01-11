@@ -57,6 +57,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       content: comment.is_deleted
         ? '**komentar telah dihapus**'
         : comment.content,
+      is_deleted: undefined,
     }));
 
     return {
