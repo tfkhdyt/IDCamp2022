@@ -1,13 +1,13 @@
-const NewReply = require('../../Domains/comments/entities/NewReply');
+const NewReply = require('../../Domains/replies/entities/NewReply');
 
 class AddReplyUseCase {
-  constructor({ commentRepository }) {
-    this._commentRepository = commentRepository;
+  constructor({ replyRepository }) {
+    this._replyRepository = replyRepository;
   }
 
   async execute(useCasePayload) {
     const newReply = new NewReply(useCasePayload);
-    return this._commentRepository.addReply(newReply);
+    return this._replyRepository.addReply(newReply);
   }
 }
 
