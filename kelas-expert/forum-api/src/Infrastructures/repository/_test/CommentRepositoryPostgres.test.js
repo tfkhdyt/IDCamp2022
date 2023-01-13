@@ -79,6 +79,34 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
+  describe('validate function', () => {
+    it('should throw not found error when comment id is not exist', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      await ThreadsTableTestHelper.addThread({ title: 'sebuah thread' });
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' });
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // action and assert
+      await expect(
+        commentRepositoryPostgres.validate('xxx')
+      ).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw not found error when thread id is not exist', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
+      await ThreadsTableTestHelper.addThread({ title: 'sebuah thread' });
+      await CommentsTableTestHelper.addComment({ content: 'sebuah comment' });
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // action and assert
+      await expect(
+        commentRepositoryPostgres.validate('comment-123')
+      ).resolves.not.toThrowError(NotFoundError);
+    });
+  });
+
   describe('findCommentById function', () => {
     it('should return correct comment', async () => {
       // arrange
