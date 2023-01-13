@@ -2,6 +2,8 @@ const NewReply = require('../../../Domains/replies/entities/NewReply');
 const AddedReply = require('../../../Domains/replies/entities/AddedReply');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
+const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const CommentRepository = require('../../../Domains/comments/CommentRepository');
 
 describe('AddReplyUseCase', () => {
   it('should orchestrating the add reply action correctly', async () => {
@@ -23,15 +25,25 @@ describe('AddReplyUseCase', () => {
 
     /** creating dependency of use case */
     const mockReplyRepository = new ReplyRepository();
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
     mockReplyRepository.addReply = jest
       .fn()
       .mockImplementation(() => Promise.resolve(expectedAddedReply));
+    mockThreadRepository.validate = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve());
+    mockCommentRepository.validate = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve());
 
     /** creating use case instance */
     const getReplyUseCase = new AddReplyUseCase({
       replyRepository: mockReplyRepository,
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
     });
 
     // action
