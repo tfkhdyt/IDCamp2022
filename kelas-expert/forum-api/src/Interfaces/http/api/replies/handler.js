@@ -39,7 +39,7 @@ class RepliesHandler {
     const { threadId, commentId, replyId } = req.params;
 
     const payload = {
-      id: replyId,
+      replyId,
       owner: req.auth.credentials.id,
       threadId,
       commentId,
