@@ -52,13 +52,31 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     };
     let commentsResult = await this._pool.query(commentsQuery);
 
-    commentsResult = commentsResult.rows.map((comment) => ({
-      ...comment,
-      content: comment.is_deleted
-        ? '**komentar telah dihapus**'
-        : comment.content,
-      is_deleted: undefined,
-    }));
+    commentsResult = await Promise.all(
+      commentsResult.rows.map(async (comment) => {
+        const repliesQuery = {
+          text: 'SELECT r.id, r.content, r.date, u.username, r.is_deleted FROM replies r JOIN users u ON u.id = r.owner WHERE r.comment_id = $1 ORDER BY r.date ASC',
+          values: [comment.id],
+        };
+        let repliesResult = await this._pool.query(repliesQuery);
+        repliesResult = repliesResult.rows.map((reply) => ({
+          ...reply,
+          content: reply.is_deleted
+            ? '**balasan telah dihapus**'
+            : reply.content,
+          is_deleted: undefined,
+        }));
+
+        return {
+          ...comment,
+          content: comment.is_deleted
+            ? '**komentar telah dihapus**'
+            : comment.content,
+          is_deleted: undefined,
+          replies: repliesResult,
+        };
+      })
+    );
 
     return {
       ...threadResult.rows[0],
