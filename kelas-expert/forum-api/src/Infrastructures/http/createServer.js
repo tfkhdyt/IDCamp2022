@@ -6,6 +6,7 @@ const users = require('../../Interfaces/http/api/users');
 const threads = require('../../Interfaces/http/api/threads');
 const authentications = require('../../Interfaces/http/api/authentications');
 const comments = require('../../Interfaces/http/api/comments');
+const replies = require('../../Interfaces/http/api/replies');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -49,6 +50,10 @@ const createServer = async (container) => {
       options: { container },
     },
     {
+      plugin: replies,
+      options: { container },
+    },
+    {
       plugin: authentications,
       options: { container },
     },
@@ -78,7 +83,6 @@ const createServer = async (container) => {
       }
 
       // penanganan server error sesuai kebutuhan
-      console.log({ translatedError });
       const newResponse = h.response({
         status: 'error',
         message: 'terjadi kegagalan pada server kami',
