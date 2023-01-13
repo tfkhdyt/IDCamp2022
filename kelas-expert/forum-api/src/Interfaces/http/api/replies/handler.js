@@ -1,33 +1,32 @@
-const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
-const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
+const AddReplyUseCase = require('../../../../Applications/use_case/AddReplyUseCase');
+const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
 
-class CommentsHandler {
+class RepliesHandler {
   constructor(container) {
     this._container = container;
 
-    this.postCommentHandler = this.postCommentHandler.bind(this);
-    this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
+    this.postReplyHandler = this.postReplyHandler.bind(this);
+    this.deleteReplyHandler = this.deleteReplyHandler.bind(this);
   }
 
-  async postCommentHandler(req, h) {
-    const { threadId } = req.params;
+  async postReplyHandler(req, h) {
+    const { threadId, commentId } = req.params;
 
     req.payload.owner = req.auth.credentials.id;
     req.payload.threadId = threadId;
+    req.payload.commentId = commentId;
 
-    const addCommentUseCase = this._container.getInstance(
-      AddCommentUseCase.name
-    );
-    const addedComment = await addCommentUseCase.execute(req.payload);
+    const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
+    const addedReply = await addReplyUseCase.execute(req.payload);
 
     const response = h
       .response({
         status: 'success',
         data: {
-          addedComment: {
-            id: addedComment.id,
-            content: addedComment.content,
-            owner: addedComment.owner,
+          addedReply: {
+            id: addedReply.id,
+            content: addedReply.content,
+            owner: addedReply.owner,
           },
         },
       })
@@ -36,20 +35,21 @@ class CommentsHandler {
     return response;
   }
 
-  async deleteCommentHandler(req, h) {
-    const { threadId, commentId } = req.params;
+  async deleteReplyHandler(req, h) {
+    const { threadId, commentId, replyId } = req.params;
 
     const payload = {
+      id: replyId,
       owner: req.auth.credentials.id,
       threadId,
       commentId,
     };
 
-    const deleteCommentUseCase = this._container.getInstance(
-      DeleteCommentUseCase.name
+    const deleteReplyUseCase = this._container.getInstance(
+      DeleteReplyUseCase.name
     );
 
-    await deleteCommentUseCase.execute(payload);
+    await deleteReplyUseCase.execute(payload);
 
     const response = h
       .response({
@@ -61,4 +61,4 @@ class CommentsHandler {
   }
 }
 
-module.exports = CommentsHandler;
+module.exports = RepliesHandler;
