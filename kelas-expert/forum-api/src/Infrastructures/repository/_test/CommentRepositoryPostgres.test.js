@@ -248,4 +248,48 @@ describe('CommentRepositoryPostgres', () => {
       ).rejects.toThrow(InvariantError);
     });
   });
+
+  describe('findCommentsByThreadId function', () => {
+    it('should return correct comments', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      const threadId = 'thread-123';
+      const fakeIdGenerator = () => '123';
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action
+      const comments = await commentRepositoryPostgres.findCommentsByThreadId(
+        threadId
+      );
+
+      console.log({ comments });
+
+      // assert
+      expect(comments.length).toEqual(1);
+      expect(comments[0].id).toEqual('comment-123');
+    });
+  });
+
+  it('should throw not found error', async () => {
+    // arrange
+    await UsersTableTestHelper.addUser({});
+    await ThreadsTableTestHelper.addThread({});
+    await CommentsTableTestHelper.addComment({});
+    const threadId = 'thread-xxx';
+    const fakeIdGenerator = () => '123';
+    const commentRepositoryPostgres = new CommentRepositoryPostgres(
+      pool,
+      fakeIdGenerator
+    );
+
+    // action
+    await expect(
+      commentRepositoryPostgres.findCommentsByThreadId(threadId)
+    ).rejects.toThrowError(NotFoundError);
+  });
 });
