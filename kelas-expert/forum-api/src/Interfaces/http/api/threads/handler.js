@@ -35,7 +35,7 @@ class ThreadsHandler {
     const findThreadUseCase = this._container.getInstance(
       FindThreadUseCase.name
     );
-    const thread = await findThreadUseCase.execute({ threadId });
+    const thread = await findThreadUseCase.execute(threadId);
 
     const response = h
       .response({

@@ -1,6 +1,7 @@
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const container = require('../../container');
 const pool = require('../../database/postgres/pool');
@@ -12,6 +13,7 @@ describe('/threads endpoint', () => {
   });
 
   afterEach(async () => {
+    await RepliesTableTestHelper.cleanTable();
     await CommentsTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
@@ -149,6 +151,7 @@ describe('/threads endpoint', () => {
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
+      await RepliesTableTestHelper.addReply({});
       const server = await createServer(container);
 
       // action
@@ -159,6 +162,7 @@ describe('/threads endpoint', () => {
 
       // assert
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.thread).toBeDefined();
@@ -169,6 +173,7 @@ describe('/threads endpoint', () => {
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
+      await RepliesTableTestHelper.addReply({});
       const server = await createServer(container);
 
       // action

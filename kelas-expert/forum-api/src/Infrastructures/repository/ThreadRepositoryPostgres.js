@@ -37,51 +37,55 @@ class ThreadRepositoryPostgres extends ThreadRepository {
   }
 
   async findThreadById(threadId) {
-    const threadQuery = {
+    const query = {
       text: 'SELECT t.id, t.title, t.body, t.date, u.username FROM threads t JOIN users u ON u.id = t.owner WHERE t.id = $1',
       values: [threadId],
     };
-    const threadResult = await this._pool.query(threadQuery);
-    if (!threadResult.rowCount) {
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
       throw new NotFoundError('Thread tidak ditemukan');
     }
 
-    const commentsQuery = {
-      text: 'SELECT c.id, u.username, c.date, c.content, c.is_deleted FROM comments c JOIN users u ON u.id = c.owner WHERE c.thread_id = $1 ORDER BY c.date ASC',
-      values: [threadId],
-    };
-    let commentsResult = await this._pool.query(commentsQuery);
+    // const commentsQuery = {
+    //   text: 'SELECT c.id, u.username, c.date, c.content, c.is_deleted FROM comments c JOIN users u ON u.id = c.owner WHERE c.thread_id = $1 ORDER BY c.date ASC',
+    //   values: [threadId],
+    // };
+    // let commentsResult = await this._pool.query(commentsQuery);
 
-    commentsResult = await Promise.all(
-      commentsResult.rows.map(async (comment) => {
-        const repliesQuery = {
-          text: 'SELECT r.id, r.content, r.date, u.username, r.is_deleted FROM replies r JOIN users u ON u.id = r.owner WHERE r.comment_id = $1 ORDER BY r.date ASC',
-          values: [comment.id],
-        };
-        let repliesResult = await this._pool.query(repliesQuery);
-        repliesResult = repliesResult.rows.map((reply) => ({
-          ...reply,
-          content: reply.is_deleted
-            ? '**balasan telah dihapus**'
-            : reply.content,
-          is_deleted: undefined,
-        }));
+    // commentsResult = await Promise.all(
+    //   commentsResult.rows.map(async (comment) => {
+    //     const repliesQuery = {
+    //       text: 'SELECT r.id, r.content, r.date, u.username, r.is_deleted FROM replies r JOIN users u ON u.id = r.owner WHERE r.comment_id = $1 ORDER BY r.date ASC',
+    //       values: [comment.id],
+    //     };
+    //     let repliesResult = await this._pool.query(repliesQuery);
+    //     repliesResult = repliesResult.rows.map((reply) => ({
+    //       ...reply,
+    //       content: reply.is_deleted
+    //         ? '**balasan telah dihapus**'
+    //         : reply.content,
+    //       is_deleted: undefined,
+    //     }));
 
-        return {
-          ...comment,
-          content: comment.is_deleted
-            ? '**komentar telah dihapus**'
-            : comment.content,
-          is_deleted: undefined,
-          replies: repliesResult,
-        };
-      })
-    );
+    //     return {
+    //       ...comment,
+    //       content: comment.is_deleted
+    //         ? '**komentar telah dihapus**'
+    //         : comment.content,
+    //       is_deleted: undefined,
+    //       replies: repliesResult,
+    //     };
+    //   })
+    // );
 
-    return {
-      ...threadResult.rows[0],
-      comments: commentsResult,
-    };
+    // return {
+    //   ...threadResult.rows[0],
+    //   comments: commentsResult,
+    // };
+
+    return result.rows[0];
   }
 }
 

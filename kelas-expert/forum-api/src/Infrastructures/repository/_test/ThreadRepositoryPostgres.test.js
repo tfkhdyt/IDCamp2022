@@ -1,7 +1,6 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
-const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
@@ -118,8 +117,6 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
       });
-      await CommentsTableTestHelper.addComment({ title: 'sebuah comment' });
-      await RepliesTableTestHelper.addReply({});
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // action
@@ -133,13 +130,6 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.body).toEqual(expectedThread.body);
       expect(thread.username).toEqual(expectedThread.username);
       expect(thread.date).toEqual(expectedThread.date);
-      expect(thread.comments).toBeDefined();
-      expect(thread.comments[0].content).not.toEqual(
-        '**komentar telah dihapus**'
-      );
-      expect(thread.comments[0].replies[0].content).not.toEqual(
-        '**balasan telah dihapus**'
-      );
     });
 
     it('should return correct thread, with deleted comment', async () => {
@@ -156,10 +146,6 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
       });
-      await CommentsTableTestHelper.addComment({ title: 'sebuah comment' });
-      await RepliesTableTestHelper.addReply({});
-      await CommentsTableTestHelper.deleteComment('comment-123');
-      await RepliesTableTestHelper.deleteReply('reply-123');
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // action
@@ -173,11 +159,6 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.body).toEqual(expectedThread.body);
       expect(thread.username).toEqual(expectedThread.username);
       expect(thread.date).toEqual(expectedThread.date);
-      expect(thread.comments).toBeDefined();
-      expect(thread.comments[0].content).toEqual('**komentar telah dihapus**');
-      expect(thread.comments[0].replies[0].content).toEqual(
-        '**balasan telah dihapus**'
-      );
     });
 
     it('should throw not found error', async () => {

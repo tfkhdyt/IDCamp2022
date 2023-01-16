@@ -1,3 +1,5 @@
+const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const FindThreadUseCase = require('../FindThreadUseCase');
@@ -8,16 +10,36 @@ describe('FindCommentUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
     };
-    const expectedThread = new AddedThread({
-      id: 'thread-123',
-      title: 'ini title',
-      body: 'ini body',
-      owner: 'user-123',
-      date: expect.any(Date),
-    });
+    const expectedThread = {
+      ...new AddedThread({
+        id: 'thread-123',
+        title: 'ini title',
+        body: 'ini body',
+        owner: 'user-123',
+        date: expect.any(Date),
+      }),
+      comments: [
+        {
+          id: 'comment-123',
+          username: 'dicoding',
+          content: 'ini konten',
+          date: expect.any(Date),
+          replies: [
+            {
+              id: 'reply-123',
+              username: 'dicoding',
+              content: 'ini konten',
+              date: expect.any(Date),
+            },
+          ],
+        },
+      ],
+    };
 
     /* creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
 
     /* mocking needed function */
     mockThreadRepository.findThreadById = jest.fn().mockImplementation(() =>
@@ -31,19 +53,52 @@ describe('FindCommentUseCase', () => {
         })
       )
     );
+    mockCommentRepository.findCommentsByThreadId = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: 'comment-123',
+            username: 'dicoding',
+            content: 'ini konten',
+            date: new Date(),
+          },
+        ])
+      );
+
+    mockReplyRepository.findRepliesByCommentId = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: 'reply-123',
+            username: 'dicoding',
+            content: 'ini konten',
+            date: new Date(),
+          },
+        ])
+      );
 
     /* creating use case instance */
     const getThreadUseCase = new FindThreadUseCase({
       threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
     });
 
     // action
-    const thread = await getThreadUseCase.execute(useCasePayload);
+    const thread = await getThreadUseCase.execute(useCasePayload.threadId);
 
     // assert
     expect(thread).toStrictEqual(expectedThread);
     expect(mockThreadRepository.findThreadById).toBeCalledWith(
       useCasePayload.threadId
+    );
+    expect(mockCommentRepository.findCommentsByThreadId).toBeCalledWith(
+      useCasePayload.threadId
+    );
+    expect(mockReplyRepository.findRepliesByCommentId).toBeCalledWith(
+      'comment-123'
     );
   });
 });
