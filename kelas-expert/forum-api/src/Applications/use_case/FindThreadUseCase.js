@@ -38,8 +38,6 @@ class FindThreadUseCase {
           };
           delete result.is_deleted;
 
-          console.log({ result });
-
           return result;
         });
 
