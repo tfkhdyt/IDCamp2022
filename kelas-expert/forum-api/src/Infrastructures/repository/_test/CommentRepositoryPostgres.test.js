@@ -267,8 +267,6 @@ describe('CommentRepositoryPostgres', () => {
         threadId
       );
 
-      console.log({ comments });
-
       // assert
       expect(comments.length).toEqual(1);
       expect(comments[0].id).toEqual('comment-123');
