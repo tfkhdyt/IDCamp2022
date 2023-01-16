@@ -2,7 +2,8 @@ class AddedReply {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const { id, content, isDeleted, owner, threadId, commentId } = payload;
+    const { id, content, isDeleted, owner, threadId, commentId, date } =
+      payload;
 
     this.id = id;
     this.content = content;
@@ -10,6 +11,7 @@ class AddedReply {
     this.owner = owner;
     this.threadId = threadId;
     this.commentId = commentId;
+    this.date = date;
   }
 
   _verifyPayload({ id, content, owner, threadId, commentId, isDeleted }) {

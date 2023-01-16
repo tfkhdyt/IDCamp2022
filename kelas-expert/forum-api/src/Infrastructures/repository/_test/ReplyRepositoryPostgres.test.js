@@ -71,7 +71,7 @@ describe('ReplyRepositoryPostgres', () => {
       const addedReply = await replyRepositoryPostgres.addReply(newReply);
 
       // assert
-      expect(addedReply).toMatchObject(
+      expect(addedReply).toStrictEqual(
         new AddedReply({
           id: 'reply-123',
           content: 'ini konten',
@@ -79,6 +79,7 @@ describe('ReplyRepositoryPostgres', () => {
           commentId: 'comment-123',
           owner: 'user-123',
           isDeleted: false,
+          date: expect.any(Date),
         })
       );
     });
@@ -109,7 +110,7 @@ describe('ReplyRepositoryPostgres', () => {
       );
 
       // assert
-      expect(reply).toMatchObject(
+      expect(reply).toStrictEqual(
         new AddedReply({
           id: replyId,
           content: 'ini balasan',
@@ -117,6 +118,7 @@ describe('ReplyRepositoryPostgres', () => {
           commentId,
           owner,
           isDeleted: false,
+          date: expect.any(Date),
         })
       );
     });

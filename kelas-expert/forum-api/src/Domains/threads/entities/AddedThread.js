@@ -8,7 +8,7 @@ class AddedThread {
     this.title = title;
     this.body = body;
     this.owner = owner;
-    if (date) this.date = date;
+    this.date = date;
   }
 
   _verifyPayload({ id, title, body, owner }) {

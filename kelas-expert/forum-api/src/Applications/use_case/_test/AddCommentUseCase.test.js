@@ -18,6 +18,7 @@ describe('AddCommentUseCase', () => {
       isDeleted: false,
       owner: useCasePayload.owner,
       threadId: useCasePayload.threadId,
+      date: expect.any(Date),
     });
 
     /** creating dependency of use case */
@@ -33,6 +34,7 @@ describe('AddCommentUseCase', () => {
           isDeleted: false,
           owner: 'user-123',
           threadId: 'thread-123',
+          date: new Date(),
         })
       )
     );
@@ -50,7 +52,7 @@ describe('AddCommentUseCase', () => {
     const addedComment = await getCommentUseCase.execute(useCasePayload);
 
     // assert
-    expect(addedComment).toMatchObject(expectedAddedComment);
+    expect(addedComment).toStrictEqual(expectedAddedComment);
     expect(mockCommentRepository.addComment).toBeCalledWith(
       new NewComment({
         content: useCasePayload.content,

@@ -67,13 +67,14 @@ describe('CommentRepositoryPostgres', () => {
       );
 
       // assert
-      expect(addedComment).toMatchObject(
+      expect(addedComment).toStrictEqual(
         new AddedComment({
           id: 'comment-123',
           content: 'ini konten',
           isDeleted: false,
           owner: 'user-123',
           threadId: 'thread-123',
+          date: expect.any(Date),
         })
       );
     });
@@ -129,13 +130,14 @@ describe('CommentRepositoryPostgres', () => {
       );
 
       // assert
-      expect(comment).toMatchObject(
+      expect(comment).toStrictEqual(
         new AddedComment({
           id: commentId,
           content: 'ini komentar',
           isDeleted: false,
           threadId,
           owner,
+          date: expect.any(Date),
         })
       );
     });

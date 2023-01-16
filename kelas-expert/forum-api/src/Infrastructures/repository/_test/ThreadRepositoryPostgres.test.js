@@ -65,12 +65,13 @@ describe('ThreadRepositoryPostgres', () => {
       const result = await threadRepositoryPostgres.addThread(newThread);
 
       // assert
-      expect(result).toMatchObject(
+      expect(result).toStrictEqual(
         new AddedThread({
           id: 'thread-123',
           title: 'ini judul',
           body: 'ini body',
           owner: 'user-123',
+          date: expect.any(Date),
         })
       );
     });

@@ -21,6 +21,7 @@ describe('AddReplyUseCase', () => {
       commentId: useCasePayload.commentId,
       owner: useCasePayload.owner,
       isDeleted: false,
+      date: expect.any(Date),
     });
 
     /** creating dependency of use case */
@@ -38,6 +39,7 @@ describe('AddReplyUseCase', () => {
           commentId: useCasePayload.commentId,
           owner: useCasePayload.owner,
           isDeleted: false,
+          date: new Date(),
         })
       )
     );
@@ -59,7 +61,7 @@ describe('AddReplyUseCase', () => {
     const addedReply = await getReplyUseCase.execute(useCasePayload);
 
     // assert
-    expect(addedReply).toMatchObject(expectedAddedReply);
+    expect(addedReply).toStrictEqual(expectedAddedReply);
     expect(mockReplyRepository.addReply).toBeCalledWith(
       new NewReply({
         content: useCasePayload.content,

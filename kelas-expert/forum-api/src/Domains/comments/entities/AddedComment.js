@@ -9,7 +9,7 @@ class AddedComment {
     this.isDeleted = isDeleted;
     this.owner = owner;
     this.threadId = threadId;
-    if (date) this.date = date;
+    this.date = date;
   }
 
   _verifyPayload({ id, content, isDeleted, owner, threadId }) {

@@ -13,15 +13,24 @@ describe('FindCommentUseCase', () => {
       title: 'ini title',
       body: 'ini body',
       owner: 'user-123',
+      date: expect.any(Date),
     });
 
     /* creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
 
     /* mocking needed function */
-    mockThreadRepository.findThreadById = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(expectedThread));
+    mockThreadRepository.findThreadById = jest.fn().mockImplementation(() =>
+      Promise.resolve(
+        new AddedThread({
+          id: 'thread-123',
+          title: 'ini title',
+          body: 'ini body',
+          owner: 'user-123',
+          date: new Date(),
+        })
+      )
+    );
 
     /* creating use case instance */
     const getThreadUseCase = new FindThreadUseCase({
@@ -32,7 +41,7 @@ describe('FindCommentUseCase', () => {
     const thread = await getThreadUseCase.execute(useCasePayload);
 
     // assert
-    expect(thread).toMatchObject(expectedThread);
+    expect(thread).toStrictEqual(expectedThread);
     expect(mockThreadRepository.findThreadById).toBeCalledWith(
       useCasePayload.threadId
     );
