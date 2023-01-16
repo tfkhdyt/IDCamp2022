@@ -25,9 +25,17 @@ describe('AddCommentUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
-    mockCommentRepository.addComment = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(expectedAddedComment));
+    mockCommentRepository.addComment = jest.fn().mockImplementation(() =>
+      Promise.resolve(
+        new AddedComment({
+          id: 'comment-123',
+          content: 'ini konten',
+          isDeleted: false,
+          owner: 'user-123',
+          threadId: 'thread-123',
+        })
+      )
+    );
     mockThreadRepository.validate = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
@@ -49,6 +57,9 @@ describe('AddCommentUseCase', () => {
         owner: useCasePayload.owner,
         threadId: useCasePayload.threadId,
       })
+    );
+    expect(mockThreadRepository.validate).toBeCalledWith(
+      useCasePayload.threadId
     );
   });
 });
