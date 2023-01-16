@@ -18,18 +18,20 @@ describe('DeleteCommentUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
-    mockCommentRepository.findCommentById = jest.fn().mockImplementation(() =>
-      Promise.resolve(
-        new AddedComment({
-          id: useCasePayload.commentId,
-          content: 'ini konten',
-          isDeleted: false,
-          owner: useCasePayload.owner,
-          threadId: useCasePayload.threadId,
-          date: '2023-01-04T09:26:00',
-        })
-      )
-    );
+    mockCommentRepository.verifyCommentAvailability = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(
+          new AddedComment({
+            id: useCasePayload.commentId,
+            content: 'ini konten',
+            isDeleted: false,
+            owner: useCasePayload.owner,
+            threadId: useCasePayload.threadId,
+            date: '2023-01-04T09:26:00',
+          })
+        )
+      );
 
     mockCommentRepository.validateCommentOwner = jest
       .fn()
@@ -48,7 +50,7 @@ describe('DeleteCommentUseCase', () => {
     await getCommentUseCase.execute(useCasePayload);
 
     // assert
-    expect(mockCommentRepository.findCommentById).toBeCalledWith(
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(
       useCasePayload.commentId,
       useCasePayload.threadId
     );

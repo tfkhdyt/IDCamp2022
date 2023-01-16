@@ -42,7 +42,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     }
   }
 
-  async findCommentById(commentId, threadId) {
+  async verifyCommentAvailability(commentId, threadId) {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1 AND thread_id = $2 AND is_deleted = FALSE',
       values: [commentId, threadId],

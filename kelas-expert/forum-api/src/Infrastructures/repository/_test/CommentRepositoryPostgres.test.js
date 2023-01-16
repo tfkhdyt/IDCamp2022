@@ -108,7 +108,7 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
-  describe('findCommentById function', () => {
+  describe('verifyCommentAvailability function', () => {
     it('should return correct comment', async () => {
       // arrange
       await UsersTableTestHelper.addUser({});
@@ -124,7 +124,7 @@ describe('CommentRepositoryPostgres', () => {
       );
 
       // action
-      const comment = await commentRepositoryPostgres.findCommentById(
+      const comment = await commentRepositoryPostgres.verifyCommentAvailability(
         commentId,
         threadId
       );
@@ -157,7 +157,7 @@ describe('CommentRepositoryPostgres', () => {
 
       // action & assert
       await expect(
-        commentRepositoryPostgres.findCommentById(commentId, threadId)
+        commentRepositoryPostgres.verifyCommentAvailability(commentId, threadId)
       ).rejects.toThrow(NotFoundError);
     });
   });
