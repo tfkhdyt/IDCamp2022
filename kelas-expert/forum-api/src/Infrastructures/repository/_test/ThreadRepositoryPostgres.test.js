@@ -111,6 +111,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
         username: 'tfkhdyt',
+        date: expect.any(Date),
       };
       await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
       await ThreadsTableTestHelper.addThread({
@@ -131,6 +132,7 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.title).toEqual(expectedThread.title);
       expect(thread.body).toEqual(expectedThread.body);
       expect(thread.username).toEqual(expectedThread.username);
+      expect(thread.date).toEqual(expectedThread.date);
       expect(thread.comments).toBeDefined();
       expect(thread.comments[0].content).not.toEqual(
         '**komentar telah dihapus**'
@@ -147,6 +149,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
         username: 'tfkhdyt',
+        date: expect.any(Date),
       };
       await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
       await ThreadsTableTestHelper.addThread({
@@ -169,6 +172,7 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.title).toEqual(expectedThread.title);
       expect(thread.body).toEqual(expectedThread.body);
       expect(thread.username).toEqual(expectedThread.username);
+      expect(thread.date).toEqual(expectedThread.date);
       expect(thread.comments).toBeDefined();
       expect(thread.comments[0].content).toEqual('**komentar telah dihapus**');
       expect(thread.comments[0].replies[0].content).toEqual(
