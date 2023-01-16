@@ -248,4 +248,48 @@ describe('ReplyRepositoryPostgres', () => {
       ).rejects.toThrow(InvariantError);
     });
   });
+
+  describe('findRepliesByCommentId function', () => {
+    it('should return correct comments', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      await RepliesTableTestHelper.addReply({});
+      const commentId = 'comment-123';
+      const fakeIdGenerator = () => '123';
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action
+      const replies = await replyRepositoryPostgres.findRepliesByCommentId(
+        commentId
+      );
+
+      // assert
+      expect(replies.length).toEqual(1);
+      expect(replies[0].id).toEqual('reply-123');
+    });
+
+    it('should throw not found error', async () => {
+      // arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      await RepliesTableTestHelper.addReply({});
+      const commentId = 'comment-xxx';
+      const fakeIdGenerator = () => '123';
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+        pool,
+        fakeIdGenerator
+      );
+
+      // action
+      await expect(
+        replyRepositoryPostgres.findRepliesByCommentId(commentId)
+      ).rejects.toThrowError(NotFoundError);
+    });
+  });
 });
