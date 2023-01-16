@@ -30,7 +30,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     });
   }
 
-  async findReplyById(replyId, commentId, threadId) {
+  async verifyReplyAvailability(replyId, commentId, threadId) {
     const query = {
       text: 'SELECT * FROM replies WHERE id = $1 AND thread_id = $2 AND comment_id = $3 AND is_deleted = FALSE',
       values: [replyId, threadId, commentId],

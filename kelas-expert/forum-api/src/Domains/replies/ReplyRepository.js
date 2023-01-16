@@ -3,7 +3,7 @@ class ReplyRepository {
     throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 
-  async findReplyById(replyId, commentId, threadId) {
+  async verifyReplyAvailability(replyId, commentId, threadId) {
     throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 

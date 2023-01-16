@@ -85,7 +85,7 @@ describe('ReplyRepositoryPostgres', () => {
     });
   });
 
-  describe('findReplyById function', () => {
+  describe('verifyReplyAvailability function', () => {
     it('should return correct reply', async () => {
       // arrange
       await UsersTableTestHelper.addUser({});
@@ -103,7 +103,7 @@ describe('ReplyRepositoryPostgres', () => {
       );
 
       // action
-      const reply = await replyRepositoryPostgres.findReplyById(
+      const reply = await replyRepositoryPostgres.verifyReplyAvailability(
         replyId,
         commentId,
         threadId
@@ -140,7 +140,11 @@ describe('ReplyRepositoryPostgres', () => {
 
       // action & assert
       await expect(
-        replyRepositoryPostgres.findReplyById(replyId, commentId, threadId)
+        replyRepositoryPostgres.verifyReplyAvailability(
+          replyId,
+          commentId,
+          threadId
+        )
       ).rejects.toThrow(NotFoundError);
     });
   });

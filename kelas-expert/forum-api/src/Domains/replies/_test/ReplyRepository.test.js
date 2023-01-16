@@ -12,9 +12,9 @@ describe('ReplyRepository interface', () => {
     await expect(replyRepository.deleteReply('')).rejects.toThrowError(
       'REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED'
     );
-    await expect(replyRepository.findReplyById('')).rejects.toThrowError(
-      'REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED'
-    );
+    await expect(
+      replyRepository.verifyReplyAvailability('')
+    ).rejects.toThrowError('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     await expect(
       replyRepository.validateReplyOwner('', '')
     ).rejects.toThrowError('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
