@@ -272,7 +272,7 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0].id).toEqual('comment-123');
     });
 
-    it('should throw not found error', async () => {
+    it('should return empty array', async () => {
       // arrange
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
@@ -285,9 +285,11 @@ describe('CommentRepositoryPostgres', () => {
       );
 
       // action
-      await expect(
-        commentRepositoryPostgres.findCommentsByThreadId(threadId)
-      ).rejects.toThrowError(NotFoundError);
+      const comments = await commentRepositoryPostgres.findCommentsByThreadId(
+        threadId
+      );
+
+      expect(comments.length).toEqual(0);
     });
   });
 });
