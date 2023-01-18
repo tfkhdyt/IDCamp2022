@@ -255,7 +255,13 @@ describe('CommentRepositoryPostgres', () => {
 
       // assert
       expect(comments.length).toEqual(1);
-      expect(comments[0].id).toEqual('comment-123');
+      expect(comments[0]).toStrictEqual({
+        id: 'comment-123',
+        username: 'dicoding',
+        date: expect.any(Date),
+        content: 'ini komentar',
+        is_deleted: false,
+      });
     });
 
     it('should return empty array', async () => {
