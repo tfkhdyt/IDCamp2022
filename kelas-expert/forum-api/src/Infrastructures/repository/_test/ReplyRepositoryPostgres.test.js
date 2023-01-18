@@ -258,7 +258,13 @@ describe('ReplyRepositoryPostgres', () => {
 
       // assert
       expect(replies.length).toEqual(1);
-      expect(replies[0].id).toEqual('reply-123');
+      expect(replies[0]).toStrictEqual({
+        id: 'reply-123',
+        content: 'ini balasan',
+        username: 'dicoding',
+        date: expect.any(Date),
+        is_deleted: false,
+      });
     });
 
     it('should return empty array', async () => {
