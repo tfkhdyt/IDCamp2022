@@ -16,20 +16,20 @@ describe('FindCommentUseCase', () => {
         title: 'ini title',
         body: 'ini body',
         owner: 'user-123',
-        date: expect.any(Date),
+        date: '2023-01-18T21:50:00',
       }),
       comments: [
         {
           id: 'comment-123',
           username: 'dicoding',
           content: 'ini konten',
-          date: expect.any(Date),
+          date: '2023-01-18T21:50:00',
           replies: [
             {
               id: 'reply-123',
               username: 'dicoding',
               content: 'ini konten',
-              date: expect.any(Date),
+              date: '2023-01-18T21:50:00',
             },
           ],
         },
@@ -49,7 +49,7 @@ describe('FindCommentUseCase', () => {
           title: 'ini title',
           body: 'ini body',
           owner: 'user-123',
-          date: new Date(),
+          date: '2023-01-18T21:50:00',
         })
       )
     );
@@ -61,7 +61,7 @@ describe('FindCommentUseCase', () => {
             id: 'comment-123',
             username: 'dicoding',
             content: 'ini konten',
-            date: new Date(),
+            date: '2023-01-18T21:50:00',
           },
         ])
       );
@@ -74,7 +74,7 @@ describe('FindCommentUseCase', () => {
             id: 'reply-123',
             username: 'dicoding',
             content: 'ini konten',
-            date: new Date(),
+            date: '2023-01-18T21:50:00',
           },
         ])
       );
@@ -119,20 +119,20 @@ describe('FindCommentUseCase', () => {
         title: 'ini title',
         body: 'ini body',
         owner: 'user-123',
-        date: expect.any(Date),
+        date: '2023-01-18T21:52:00',
       }),
       comments: [
         {
           id: 'comment-123',
           username: 'dicoding',
           content: '**komentar telah dihapus**',
-          date: expect.any(Date),
+          date: '2023-01-18T21:52:00',
           replies: [
             {
               id: 'reply-123',
               username: 'dicoding',
               content: '**balasan telah dihapus**',
-              date: expect.any(Date),
+              date: '2023-01-18T21:52:00',
             },
           ],
         },
@@ -152,7 +152,7 @@ describe('FindCommentUseCase', () => {
           title: 'ini title',
           body: 'ini body',
           owner: 'user-123',
-          date: new Date(),
+          date: '2023-01-18T21:52:00',
         })
       )
     );
@@ -164,7 +164,7 @@ describe('FindCommentUseCase', () => {
             id: 'comment-123',
             username: 'dicoding',
             content: 'ini konten',
-            date: new Date(),
+            date: '2023-01-18T21:52:00',
             is_deleted: true,
           },
         ])
@@ -178,7 +178,7 @@ describe('FindCommentUseCase', () => {
             id: 'reply-123',
             username: 'dicoding',
             content: 'ini konten',
-            date: new Date(),
+            date: '2023-01-18T21:52:00',
             is_deleted: true,
           },
         ])

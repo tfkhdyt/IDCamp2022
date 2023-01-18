@@ -18,7 +18,7 @@ describe('AddCommentUseCase', () => {
       isDeleted: false,
       owner: useCasePayload.owner,
       threadId: useCasePayload.threadId,
-      date: expect.any(Date),
+      date: '2023-01-18T21:44:00',
     });
 
     /** creating dependency of use case */
@@ -34,7 +34,7 @@ describe('AddCommentUseCase', () => {
           isDeleted: false,
           owner: 'user-123',
           threadId: 'thread-123',
-          date: new Date(),
+          date: '2023-01-18T21:44:00',
         })
       )
     );

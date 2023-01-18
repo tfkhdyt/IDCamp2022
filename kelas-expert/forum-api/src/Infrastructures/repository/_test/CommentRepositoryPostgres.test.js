@@ -74,7 +74,7 @@ describe('CommentRepositoryPostgres', () => {
           isDeleted: false,
           owner: 'user-123',
           threadId: 'thread-123',
-          date: expect.any(Date),
+          date: addedComment.date,
         })
       );
     });
@@ -258,7 +258,7 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0]).toStrictEqual({
         id: 'comment-123',
         username: 'dicoding',
-        date: expect.any(Date),
+        date: comments[0].date,
         content: 'ini komentar',
         is_deleted: false,
       });

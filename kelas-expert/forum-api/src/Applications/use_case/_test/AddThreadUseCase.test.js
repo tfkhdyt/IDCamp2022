@@ -17,7 +17,7 @@ describe('AddThreadUseCase', () => {
       title: useCasePayload.title,
       body: useCasePayload.body,
       owner: useCasePayload.owner,
-      date: new Date(),
+      date: '2023-01-18T21:45:00',
     });
 
     // creating dependency of use case
@@ -31,7 +31,7 @@ describe('AddThreadUseCase', () => {
           title: useCasePayload.title,
           body: useCasePayload.body,
           owner: useCasePayload.owner,
-          date: expect.any(Date),
+          date: '2023-01-18T21:45:00',
         })
       )
     );

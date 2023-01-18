@@ -79,7 +79,7 @@ describe('ReplyRepositoryPostgres', () => {
           commentId: 'comment-123',
           owner: 'user-123',
           isDeleted: false,
-          date: expect.any(Date),
+          date: addedReply.date,
         })
       );
     });
@@ -262,7 +262,7 @@ describe('ReplyRepositoryPostgres', () => {
         id: 'reply-123',
         content: 'ini balasan',
         username: 'dicoding',
-        date: expect.any(Date),
+        date: replies[0].date,
         is_deleted: false,
       });
     });

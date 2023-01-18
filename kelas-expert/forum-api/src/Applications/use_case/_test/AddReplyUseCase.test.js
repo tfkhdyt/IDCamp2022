@@ -21,7 +21,7 @@ describe('AddReplyUseCase', () => {
       commentId: useCasePayload.commentId,
       owner: useCasePayload.owner,
       isDeleted: false,
-      date: expect.any(Date),
+      date: '2023-01-18T21:42:00',
     });
 
     /** creating dependency of use case */
@@ -39,7 +39,7 @@ describe('AddReplyUseCase', () => {
           commentId: useCasePayload.commentId,
           owner: useCasePayload.owner,
           isDeleted: false,
-          date: new Date(),
+          date: '2023-01-18T21:42:00',
         })
       )
     );
