@@ -86,7 +86,7 @@ describe('ReplyRepositoryPostgres', () => {
   });
 
   describe('verifyReplyAvailability function', () => {
-    it('should return correct reply', async () => {
+    it('should not throw error', async () => {
       // arrange
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
@@ -95,32 +95,20 @@ describe('ReplyRepositoryPostgres', () => {
       const replyId = 'reply-123';
       const commentId = 'comment-123';
       const threadId = 'thread-123';
-      const owner = 'user-123';
       const fakeIdGenerator = () => '123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
         fakeIdGenerator
       );
 
-      // action
-      const reply = await replyRepositoryPostgres.verifyReplyAvailability(
-        replyId,
-        commentId,
-        threadId
-      );
-
-      // assert
-      expect(reply).toStrictEqual(
-        new AddedReply({
-          id: replyId,
-          content: 'ini balasan',
-          threadId,
+      // action and assert
+      await expect(
+        replyRepositoryPostgres.verifyReplyAvailability(
+          replyId,
           commentId,
-          owner,
-          isDeleted: false,
-          date: expect.any(Date),
-        })
-      );
+          threadId
+        )
+      ).resolves.not.toThrow(NotFoundError);
     });
 
     it('should throw not found error', async () => {

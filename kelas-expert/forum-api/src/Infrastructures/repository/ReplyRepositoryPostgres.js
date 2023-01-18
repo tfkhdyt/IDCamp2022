@@ -41,14 +41,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!result.rowCount) {
       throw new NotFoundError('reply tidak ditemukan');
     }
-
-    return new AddedReply({
-      ...result.rows[0],
-      threadId: result.rows[0].thread_id,
-      commentId: result.rows[0].comment_id,
-      replyId: result.rows[0].reply_id,
-      isDeleted: result.rows[0].is_deleted,
-    });
   }
 
   async validateReplyOwner(replyId, commentId, threadId, owner) {

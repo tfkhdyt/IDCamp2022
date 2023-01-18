@@ -21,19 +21,7 @@ describe('DeleteReplyUseCase', () => {
     /** mocking needed function */
     mockReplyRepository.verifyReplyAvailability = jest
       .fn()
-      .mockImplementation(() =>
-        Promise.resolve(
-          new AddedReply({
-            id: useCasePayload.replyId,
-            content: 'ini konten',
-            threadId: useCasePayload.threadId,
-            commentId: useCasePayload.commentId,
-            owner: useCasePayload.owner,
-            isDeleted: false,
-            date: '2023-01-04T09:26:00',
-          })
-        )
-      );
+      .mockImplementation(() => Promise.resolve());
 
     mockReplyRepository.validateReplyOwner = jest
       .fn()
