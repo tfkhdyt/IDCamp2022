@@ -53,12 +53,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rowCount) {
       throw new NotFoundError('comment tidak ditemukan');
     }
-
-    return new AddedComment({
-      ...result.rows[0],
-      threadId: result.rows[0].thread_id,
-      isDeleted: result.rows[0].is_deleted,
-    });
   }
 
   async validateCommentOwner(commentId, threadId, owner) {

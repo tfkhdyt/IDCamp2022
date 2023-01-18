@@ -20,18 +20,7 @@ describe('DeleteCommentUseCase', () => {
     /** mocking needed function */
     mockCommentRepository.verifyCommentAvailability = jest
       .fn()
-      .mockImplementation(() =>
-        Promise.resolve(
-          new AddedComment({
-            id: useCasePayload.commentId,
-            content: 'ini konten',
-            isDeleted: false,
-            owner: useCasePayload.owner,
-            threadId: useCasePayload.threadId,
-            date: '2023-01-04T09:26:00',
-          })
-        )
-      );
+      .mockImplementation(() => Promise.resolve());
 
     mockCommentRepository.validateCommentOwner = jest
       .fn()

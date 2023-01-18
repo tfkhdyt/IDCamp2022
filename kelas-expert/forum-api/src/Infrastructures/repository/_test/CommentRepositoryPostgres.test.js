@@ -109,37 +109,23 @@ describe('CommentRepositoryPostgres', () => {
   });
 
   describe('verifyCommentAvailability function', () => {
-    it('should return correct comment', async () => {
+    it('should not throw error', async () => {
       // arrange
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
       const commentId = 'comment-123';
       const threadId = 'thread-123';
-      const owner = 'user-123';
       const fakeIdGenerator = () => '123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
         pool,
         fakeIdGenerator
       );
 
-      // action
-      const comment = await commentRepositoryPostgres.verifyCommentAvailability(
-        commentId,
-        threadId
-      );
-
-      // assert
-      expect(comment).toStrictEqual(
-        new AddedComment({
-          id: commentId,
-          content: 'ini komentar',
-          isDeleted: false,
-          threadId,
-          owner,
-          date: expect.any(Date),
-        })
-      );
+      // action & assert
+      await expect(
+        commentRepositoryPostgres.verifyCommentAvailability(commentId, threadId)
+      ).resolves.not.toThrow(NotFoundError);
     });
 
     it('should throw not found error', async () => {
