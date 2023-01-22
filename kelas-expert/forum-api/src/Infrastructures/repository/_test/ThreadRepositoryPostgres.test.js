@@ -54,6 +54,13 @@ describe('ThreadRepositoryPostgres', () => {
         body: 'ini body',
         owner: 'user-123',
       });
+      const expectedResult = new AddedThread({
+        id: 'thread-123',
+        title: 'ini judul',
+        body: 'ini body',
+        owner: 'user-123',
+        date: expect.any(Date),
+      });
       const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
@@ -64,15 +71,7 @@ describe('ThreadRepositoryPostgres', () => {
       const result = await threadRepositoryPostgres.addThread(newThread);
 
       // assert
-      expect(result).toStrictEqual(
-        new AddedThread({
-          id: 'thread-123',
-          title: 'ini judul',
-          body: 'ini body',
-          owner: 'user-123',
-          date: result.date,
-        })
-      );
+      expect(result).toStrictEqual(expectedResult);
     });
   });
 
@@ -110,6 +109,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
         username: 'tfkhdyt',
+        date: expect.any(Date),
       };
       await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
       await ThreadsTableTestHelper.addThread({
@@ -128,6 +128,7 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.title).toEqual(expectedThread.title);
       expect(thread.body).toEqual(expectedThread.body);
       expect(thread.username).toEqual(expectedThread.username);
+      expect(thread.date).toEqual(expectedThread.date);
     });
 
     it('should return correct thread, with deleted comment', async () => {
@@ -137,6 +138,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
         username: 'tfkhdyt',
+        date: expect.any(Date),
       };
       await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
       await ThreadsTableTestHelper.addThread({
@@ -155,6 +157,7 @@ describe('ThreadRepositoryPostgres', () => {
       expect(thread.title).toEqual(expectedThread.title);
       expect(thread.body).toEqual(expectedThread.body);
       expect(thread.username).toEqual(expectedThread.username);
+      expect(thread.date).toEqual(expectedThread.date);
     });
 
     it('should throw not found error', async () => {
