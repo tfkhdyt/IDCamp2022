@@ -1,5 +1,4 @@
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
-const AddedReply = require('../../../Domains/replies/entities/AddedReply');
 const DeleteReplyUseCase = require('../DeleteReplyUseCase');
 
 describe('DeleteReplyUseCase', () => {
@@ -10,9 +9,6 @@ describe('DeleteReplyUseCase', () => {
       commentId: 'comment-123',
       threadId: 'thread-123',
       owner: 'user-123',
-    };
-    const expectedResult = {
-      status: 'success',
     };
 
     /** creating dependencies of use case */
@@ -29,7 +25,7 @@ describe('DeleteReplyUseCase', () => {
 
     mockReplyRepository.deleteReply = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(expectedResult));
+      .mockImplementation(() => Promise.resolve());
 
     /** creating use case instance */
     const getReplyUseCase = new DeleteReplyUseCase({
