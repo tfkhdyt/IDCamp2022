@@ -62,6 +62,7 @@ describe('FindCommentUseCase', () => {
             username: 'dicoding',
             content: 'ini konten',
             date: '2023-01-18T21:50:00',
+            is_deleted: false,
           },
         ])
       );
@@ -75,6 +76,7 @@ describe('FindCommentUseCase', () => {
             username: 'dicoding',
             content: 'ini konten',
             date: '2023-01-18T21:50:00',
+            is_deleted: false,
           },
         ])
       );
