@@ -61,6 +61,15 @@ describe('ReplyRepositoryPostgres', () => {
         commentId: 'comment-123',
         owner: 'user-123',
       });
+      const expectedResult = new AddedReply({
+        id: 'reply-123',
+        content: 'ini konten',
+        threadId: 'thread-123',
+        commentId: 'comment-123',
+        owner: 'user-123',
+        isDeleted: false,
+        date: expect.any(Date),
+      });
       const fakeIdGenerator = () => '123'; // stub
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
@@ -71,17 +80,7 @@ describe('ReplyRepositoryPostgres', () => {
       const addedReply = await replyRepositoryPostgres.addReply(newReply);
 
       // assert
-      expect(addedReply).toStrictEqual(
-        new AddedReply({
-          id: 'reply-123',
-          content: 'ini konten',
-          threadId: 'thread-123',
-          commentId: 'comment-123',
-          owner: 'user-123',
-          isDeleted: false,
-          date: addedReply.date,
-        })
-      );
+      expect(addedReply).toStrictEqual(expectedResult);
     });
   });
 
@@ -262,7 +261,7 @@ describe('ReplyRepositoryPostgres', () => {
         id: 'reply-123',
         content: 'ini balasan',
         username: 'dicoding',
-        date: replies[0].date,
+        date: expect.any(Date),
         is_deleted: false,
       });
     });

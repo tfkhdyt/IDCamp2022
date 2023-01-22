@@ -55,6 +55,14 @@ describe('CommentRepositoryPostgres', () => {
         owner: 'user-123',
         threadId: 'thread-123',
       });
+      const expectedResult = new AddedComment({
+        id: 'comment-123',
+        content: 'ini konten',
+        isDeleted: false,
+        owner: 'user-123',
+        threadId: 'thread-123',
+        date: expect.any(Date),
+      });
       const fakeIdGenerator = () => '123'; // stub
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
         pool,
@@ -67,16 +75,7 @@ describe('CommentRepositoryPostgres', () => {
       );
 
       // assert
-      expect(addedComment).toStrictEqual(
-        new AddedComment({
-          id: 'comment-123',
-          content: 'ini konten',
-          isDeleted: false,
-          owner: 'user-123',
-          threadId: 'thread-123',
-          date: addedComment.date,
-        })
-      );
+      expect(addedComment).toStrictEqual(expectedResult);
     });
   });
 
@@ -258,7 +257,7 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0]).toStrictEqual({
         id: 'comment-123',
         username: 'dicoding',
-        date: comments[0].date,
+        date: expect.any(Date),
         content: 'ini komentar',
         is_deleted: false,
       });
