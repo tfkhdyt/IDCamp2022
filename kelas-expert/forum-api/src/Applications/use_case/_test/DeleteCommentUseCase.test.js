@@ -10,9 +10,6 @@ describe('DeleteCommentUseCase', () => {
       threadId: 'thread-123',
       owner: 'user-123',
     };
-    const expectedResult = {
-      status: 'success',
-    };
 
     /** creating dependencies of use case */
     const mockCommentRepository = new CommentRepository();
@@ -28,7 +25,7 @@ describe('DeleteCommentUseCase', () => {
 
     mockCommentRepository.deleteComment = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(expectedResult));
+      .mockImplementation(() => Promise.resolve());
 
     /** creating use case instance */
     const getCommentUseCase = new DeleteCommentUseCase({
