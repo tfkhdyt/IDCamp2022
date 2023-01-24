@@ -1,10 +1,8 @@
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const DetailThread = require('../../../Domains/threads/entities/DetailThread');
-const DetailComment = require('../../../Domains/comments/entities/DetailComment');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const FindThreadUseCase = require('../FindThreadUseCase');
-const DetailReply = require('../../../Domains/replies/entities/DetailReply');
 
 describe('FindThreadUseCase', () => {
   it('should orchestrating the find thread action correctly', async () => {
@@ -12,29 +10,29 @@ describe('FindThreadUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
     };
-    const expectedThread = new DetailThread({
+    const expectedThread = {
       id: 'thread-123',
       title: 'ini title',
       body: 'ini body',
       date: '2023-01-18T21:50:00',
       username: 'tfkhdyt',
       comments: [
-        new DetailComment({
+        {
           id: 'comment-123',
           username: 'dicoding',
           content: 'ini konten',
           date: '2023-01-18T21:50:00',
           replies: [
-            new DetailReply({
+            {
               id: 'reply-123',
               username: 'dicoding',
               content: 'ini konten',
               date: '2023-01-18T21:50:00',
-            }),
+            },
           ],
-        }),
+        },
       ],
-    });
+    };
 
     /* creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
@@ -116,29 +114,29 @@ describe('FindThreadUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
     };
-    const expectedThread = new DetailThread({
+    const expectedThread = {
       id: 'thread-123',
       title: 'ini title',
       body: 'ini body',
       username: 'tfkhdyt',
       date: '2023-01-18T21:52:00',
       comments: [
-        new DetailComment({
+        {
           id: 'comment-123',
           username: 'dicoding',
           content: '**komentar telah dihapus**',
           date: '2023-01-18T21:52:00',
           replies: [
-            new DetailReply({
+            {
               id: 'reply-123',
               username: 'dicoding',
               content: '**balasan telah dihapus**',
               date: '2023-01-18T21:52:00',
-            }),
+            },
           ],
-        }),
+        },
       ],
-    });
+    };
 
     /* creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
@@ -167,6 +165,7 @@ describe('FindThreadUseCase', () => {
             username: 'dicoding',
             content: 'ini konten',
             date: '2023-01-18T21:52:00',
+            replies: [],
             is_deleted: true,
           },
         ])

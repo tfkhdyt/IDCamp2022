@@ -1,7 +1,3 @@
-const DetailComment = require('../../Domains/comments/entities/DetailComment');
-const DetailReply = require('../../Domains/replies/entities/DetailReply');
-const DetailThread = require('../../Domains/threads/entities/DetailThread');
-
 class FindThreadUseCase {
   constructor({ threadRepository, commentRepository, replyRepository }) {
     this._threadRepository = threadRepository;
@@ -25,10 +21,7 @@ class FindThreadUseCase {
       };
       delete result.is_deleted;
 
-      return new DetailComment({
-        ...result,
-        replies: [],
-      });
+      return result;
     });
 
     comments = await Promise.all(
@@ -45,20 +38,20 @@ class FindThreadUseCase {
           };
           delete result.is_deleted;
 
-          return new DetailReply(result);
+          return result;
         });
 
-        return new DetailComment({
-          ...comments,
+        return {
+          ...comment,
           replies,
-        });
+        };
       })
     );
 
-    return new DetailThread({
+    return {
       ...thread,
       comments,
-    });
+    };
   }
 }
 
