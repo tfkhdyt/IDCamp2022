@@ -16,7 +16,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const id = `comment-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4) RETURNING id, content, owner, thread_id, date, is_deleted',
+      text: 'INSERT INTO comments VALUES($1, $2, $3, $4) RETURNING id, content, owner',
       values: [id, content, owner, threadId],
     };
 
@@ -24,8 +24,6 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     return new AddedComment({
       ...result.rows[0],
-      threadId: result.rows[0].thread_id,
-      isDeleted: result.rows[0].is_deleted,
     });
   }
 
@@ -90,7 +88,10 @@ class CommentRepositoryPostgres extends CommentRepository {
     };
     const result = await this._pool.query(commentsQuery);
 
-    return result.rows;
+    return result.rows.map((comment) => ({
+      ...comment,
+      date: comment.date.toISOString(),
+    }));
   }
 }
 

@@ -58,10 +58,7 @@ describe('CommentRepositoryPostgres', () => {
       const expectedResult = new AddedComment({
         id: 'comment-123',
         content: 'ini konten',
-        isDeleted: false,
         owner: 'user-123',
-        threadId: 'thread-123',
-        date: expect.any(Date),
       });
       const fakeIdGenerator = () => '123'; // stub
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
@@ -257,7 +254,7 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0]).toStrictEqual({
         id: 'comment-123',
         username: 'dicoding',
-        date: expect.any(Date),
+        date: '2023-01-24T08:41:00.000Z',
         content: 'ini komentar',
         is_deleted: false,
       });

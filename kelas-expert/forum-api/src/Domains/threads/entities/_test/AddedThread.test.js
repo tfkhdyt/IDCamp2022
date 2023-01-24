@@ -5,7 +5,6 @@ describe('a AddedThread entities', () => {
     // arrange
     const payload = {
       title: 'abc',
-      body: 'cba',
     };
 
     // action and assert
@@ -19,9 +18,7 @@ describe('a AddedThread entities', () => {
     const payload = {
       id: 69,
       title: 123,
-      body: true,
       owner: 'bruh',
-      date: true,
     };
 
     // action and assert
@@ -35,9 +32,7 @@ describe('a AddedThread entities', () => {
     const payload = {
       id: 'thread-123',
       title: 'inijudulinijudulinijudulinijudulinijudulinijudulinijudulinijudul',
-      body: 'ini body',
       owner: 'user-123',
-      date: '2022-12-23T16:12:00',
     };
 
     // Action and Assert
@@ -51,19 +46,15 @@ describe('a AddedThread entities', () => {
     const payload = {
       id: 'thread-123',
       title: 'ini judul',
-      body: 'ini body',
       owner: 'user-123',
-      date: '2022-12-23T16:12:00',
     };
 
     // Action
-    const { id, title, body, owner, date } = new AddedThread(payload);
+    const { id, title, owner } = new AddedThread(payload);
 
     // Assert
     expect(id).toEqual(payload.id);
     expect(title).toEqual(payload.title);
-    expect(body).toEqual(payload.body);
     expect(owner).toEqual(payload.owner);
-    expect(date).toEqual(payload.date);
   });
 });

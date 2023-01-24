@@ -16,7 +16,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const id = `reply-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5) RETURNING id, content, comment_id, owner, thread_id, date, is_deleted',
+      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner',
       values: [id, content, threadId, commentId, owner],
     };
 
@@ -24,9 +24,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     return new AddedReply({
       ...result.rows[0],
-      threadId: result.rows[0].thread_id,
-      commentId: result.rows[0].comment_id,
-      isDeleted: result.rows[0].is_deleted,
     });
   }
 
@@ -79,7 +76,10 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(repliesQuery);
 
-    return result.rows;
+    return result.rows.map((reply) => ({
+      ...reply,
+      date: reply.date.toISOString(),
+    }));
   }
 }
 

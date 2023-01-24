@@ -5,7 +5,6 @@ describe('an AddedComment entities', () => {
     // arrange
     const payload = {
       content: 'ini konten',
-      isDeleted: false,
     };
 
     // action and assert
@@ -19,10 +18,7 @@ describe('an AddedComment entities', () => {
     const payload = {
       id: 123,
       content: 'ini konten',
-      isDeleted: [],
       owner: {},
-      threadId: 420,
-      date: true,
     };
 
     // action and assert
@@ -36,10 +32,7 @@ describe('an AddedComment entities', () => {
     const payload = {
       id: 'comment-123',
       content: 'ini konten',
-      isDeleted: false,
       owner: 'user-123',
-      threadId: 'thread-123',
-      date: '2022-12-29T09:24:00',
     };
 
     // action
@@ -48,9 +41,6 @@ describe('an AddedComment entities', () => {
     // assert
     expect(addedComment.id).toEqual(payload.id);
     expect(addedComment.content).toEqual(payload.content);
-    expect(addedComment.isDeleted).toEqual(payload.isDeleted);
     expect(addedComment.owner).toEqual(payload.owner);
-    expect(addedComment.threadId).toEqual(payload.threadId);
-    expect(addedComment.date).toEqual(payload.date);
   });
 });

@@ -17,11 +17,7 @@ describe('AddReplyUseCase', () => {
     const expectedAddedReply = new AddedReply({
       id: 'reply-123',
       content: useCasePayload.content,
-      threadId: useCasePayload.threadId,
-      commentId: useCasePayload.commentId,
       owner: useCasePayload.owner,
-      isDeleted: false,
-      date: '2023-01-18T21:42:00',
     });
 
     /** creating dependency of use case */
@@ -35,11 +31,7 @@ describe('AddReplyUseCase', () => {
         new AddedReply({
           id: 'reply-123',
           content: useCasePayload.content,
-          threadId: useCasePayload.threadId,
-          commentId: useCasePayload.commentId,
           owner: useCasePayload.owner,
-          isDeleted: false,
-          date: '2023-01-18T21:42:00',
         })
       )
     );

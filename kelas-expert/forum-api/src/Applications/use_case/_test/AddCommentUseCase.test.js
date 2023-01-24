@@ -15,10 +15,7 @@ describe('AddCommentUseCase', () => {
     const expectedAddedComment = new AddedComment({
       id: 'comment-123',
       content: useCasePayload.content,
-      isDeleted: false,
       owner: useCasePayload.owner,
-      threadId: useCasePayload.threadId,
-      date: '2023-01-18T21:44:00',
     });
 
     /** creating dependency of use case */
@@ -31,10 +28,7 @@ describe('AddCommentUseCase', () => {
         new AddedComment({
           id: 'comment-123',
           content: 'ini konten',
-          isDeleted: false,
           owner: 'user-123',
-          threadId: 'thread-123',
-          date: '2023-01-18T21:44:00',
         })
       )
     );

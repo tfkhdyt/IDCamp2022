@@ -1,40 +1,40 @@
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
-const AddedThread = require('../../../Domains/threads/entities/AddedThread');
+const DetailThread = require('../../../Domains/threads/entities/DetailThread');
+const DetailComment = require('../../../Domains/comments/entities/DetailComment');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const FindThreadUseCase = require('../FindThreadUseCase');
+const DetailReply = require('../../../Domains/replies/entities/DetailReply');
 
-describe('FindCommentUseCase', () => {
+describe('FindThreadUseCase', () => {
   it('should orchestrating the find thread action correctly', async () => {
     // arrange
     const useCasePayload = {
       threadId: 'thread-123',
     };
-    const expectedThread = {
-      ...new AddedThread({
-        id: 'thread-123',
-        title: 'ini title',
-        body: 'ini body',
-        owner: 'user-123',
-        date: '2023-01-18T21:50:00',
-      }),
+    const expectedThread = new DetailThread({
+      id: 'thread-123',
+      title: 'ini title',
+      body: 'ini body',
+      date: '2023-01-18T21:50:00',
+      username: 'tfkhdyt',
       comments: [
-        {
+        new DetailComment({
           id: 'comment-123',
           username: 'dicoding',
           content: 'ini konten',
           date: '2023-01-18T21:50:00',
           replies: [
-            {
+            new DetailReply({
               id: 'reply-123',
               username: 'dicoding',
               content: 'ini konten',
               date: '2023-01-18T21:50:00',
-            },
+            }),
           ],
-        },
+        }),
       ],
-    };
+    });
 
     /* creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
@@ -44,12 +44,13 @@ describe('FindCommentUseCase', () => {
     /* mocking needed function */
     mockThreadRepository.findThreadById = jest.fn().mockImplementation(() =>
       Promise.resolve(
-        new AddedThread({
+        new DetailThread({
           id: 'thread-123',
           title: 'ini title',
           body: 'ini body',
-          owner: 'user-123',
+          username: 'tfkhdyt',
           date: '2023-01-18T21:50:00',
+          comments: [],
         })
       )
     );
@@ -115,31 +116,29 @@ describe('FindCommentUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
     };
-    const expectedThread = {
-      ...new AddedThread({
-        id: 'thread-123',
-        title: 'ini title',
-        body: 'ini body',
-        owner: 'user-123',
-        date: '2023-01-18T21:52:00',
-      }),
+    const expectedThread = new DetailThread({
+      id: 'thread-123',
+      title: 'ini title',
+      body: 'ini body',
+      username: 'tfkhdyt',
+      date: '2023-01-18T21:52:00',
       comments: [
-        {
+        new DetailComment({
           id: 'comment-123',
           username: 'dicoding',
           content: '**komentar telah dihapus**',
           date: '2023-01-18T21:52:00',
           replies: [
-            {
+            new DetailReply({
               id: 'reply-123',
               username: 'dicoding',
               content: '**balasan telah dihapus**',
               date: '2023-01-18T21:52:00',
-            },
+            }),
           ],
-        },
+        }),
       ],
-    };
+    });
 
     /* creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
@@ -149,12 +148,13 @@ describe('FindCommentUseCase', () => {
     /* mocking needed function */
     mockThreadRepository.findThreadById = jest.fn().mockImplementation(() =>
       Promise.resolve(
-        new AddedThread({
+        new DetailThread({
           id: 'thread-123',
           title: 'ini title',
           body: 'ini body',
-          owner: 'user-123',
+          username: 'tfkhdyt',
           date: '2023-01-18T21:52:00',
+          comments: [],
         })
       )
     );

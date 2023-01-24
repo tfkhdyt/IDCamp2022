@@ -64,11 +64,7 @@ describe('ReplyRepositoryPostgres', () => {
       const expectedResult = new AddedReply({
         id: 'reply-123',
         content: 'ini konten',
-        threadId: 'thread-123',
-        commentId: 'comment-123',
         owner: 'user-123',
-        isDeleted: false,
-        date: expect.any(Date),
       });
       const fakeIdGenerator = () => '123'; // stub
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
@@ -261,7 +257,7 @@ describe('ReplyRepositoryPostgres', () => {
         id: 'reply-123',
         content: 'ini balasan',
         username: 'dicoding',
-        date: expect.any(Date),
+        date: '2023-01-24T08:41:00.000Z',
         is_deleted: false,
       });
     });

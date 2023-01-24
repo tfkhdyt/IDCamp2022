@@ -8,10 +8,11 @@ const RepliesTableTestHelper = {
     threadId = 'thread-123',
     commentId = 'comment-123',
     owner = 'user-123',
+    date = '2023-01-24T15:41:00',
   }) {
     const query = {
-      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5)',
-      values: [id, content, threadId, commentId, owner],
+      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5, $6)',
+      values: [id, content, threadId, commentId, owner, date],
     };
 
     await pool.query(query);

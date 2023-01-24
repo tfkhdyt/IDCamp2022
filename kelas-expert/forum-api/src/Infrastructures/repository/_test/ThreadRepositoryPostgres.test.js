@@ -57,9 +57,7 @@ describe('ThreadRepositoryPostgres', () => {
       const expectedResult = new AddedThread({
         id: 'thread-123',
         title: 'ini judul',
-        body: 'ini body',
         owner: 'user-123',
-        date: expect.any(Date),
       });
       const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
@@ -109,7 +107,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
         username: 'tfkhdyt',
-        date: expect.any(Date),
+        date: '2023-01-24T08:41:00.000Z',
       };
       await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
       await ThreadsTableTestHelper.addThread({
@@ -138,7 +136,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
         username: 'tfkhdyt',
-        date: expect.any(Date),
+        date: '2023-01-24T08:41:00.000Z',
       };
       await UsersTableTestHelper.addUser({ username: 'tfkhdyt' });
       await ThreadsTableTestHelper.addThread({

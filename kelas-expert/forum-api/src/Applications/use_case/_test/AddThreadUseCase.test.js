@@ -15,9 +15,7 @@ describe('AddThreadUseCase', () => {
     const expectedAddedThread = new AddedThread({
       id: 'thread-123',
       title: useCasePayload.title,
-      body: useCasePayload.body,
       owner: useCasePayload.owner,
-      date: '2023-01-18T21:45:00',
     });
 
     // creating dependency of use case
@@ -29,9 +27,7 @@ describe('AddThreadUseCase', () => {
         new AddedThread({
           id: 'thread-123',
           title: useCasePayload.title,
-          body: useCasePayload.body,
           owner: useCasePayload.owner,
-          date: '2023-01-18T21:45:00',
         })
       )
     );

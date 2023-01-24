@@ -18,11 +18,7 @@ describe('an AddedReply entities', () => {
     const payload = {
       id: 123,
       content: 123,
-      threadId: 420,
-      commentId: 69,
       owner: {},
-      isDeleted: [],
-      date: true,
     };
 
     // action and assert
@@ -36,11 +32,7 @@ describe('an AddedReply entities', () => {
     const payload = {
       id: 'reply-123',
       content: 'ini konten',
-      threadId: 'thread-123',
-      commentId: 'comment-123',
       owner: 'user-123',
-      isDeleted: false,
-      date: '2023-01-18T21:20:00',
     };
 
     // action
@@ -49,10 +41,6 @@ describe('an AddedReply entities', () => {
     // assert
     expect(addedReply.id).toEqual(payload.id);
     expect(addedReply.content).toEqual(payload.content);
-    expect(addedReply.threadId).toEqual(payload.threadId);
-    expect(addedReply.commentId).toEqual(payload.commentId);
     expect(addedReply.owner).toEqual(payload.owner);
-    expect(addedReply.isDeleted).toEqual(payload.isDeleted);
-    expect(addedReply.date).toEqual(payload.date);
   });
 });
