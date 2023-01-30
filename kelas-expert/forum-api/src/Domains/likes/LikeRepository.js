@@ -8,7 +8,7 @@ class LikeRepository {
   }
 
   async checkLikeStatus(newLike) {
-    throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED')
+    throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }
 
