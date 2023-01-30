@@ -98,9 +98,8 @@ describe('LikeRepositoryPostgres', () => {
         likeRepositoryPostgres.checkLikeStatus({
           threadId,
           commentId,
-          owner
-        }
-        )
+          owner,
+        })
       ).resolves.not.toThrow(NotFoundError);
     });
 
@@ -123,11 +122,11 @@ describe('LikeRepositoryPostgres', () => {
 
       // action & assert
       await expect(
-        likeRepositoryPostgres.checkLikeStatus(
+        likeRepositoryPostgres.checkLikeStatus({
           threadId,
           commentId,
           owner,
-        )
+        })
       ).rejects.toThrow(NotFoundError);
     });
   });
