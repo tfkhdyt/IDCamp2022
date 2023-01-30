@@ -1,4 +1,3 @@
-const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const LikeRepository = require('../../Domains/likes/LikeRepository');
 
 class LikeRepositoryPostgres extends LikeRepository {
@@ -31,7 +30,7 @@ class LikeRepositoryPostgres extends LikeRepository {
     await this._pool.query(query);
   }
 
-  async checkLikeStatus(newLike) {
+  async isAlreadyLiked(newLike) {
     const { owner, threadId, commentId } = newLike;
 
     const query = {
@@ -41,9 +40,10 @@ class LikeRepositoryPostgres extends LikeRepository {
 
     const result = await this._pool.query(query);
 
-    if (!result.rowCount) {
-      throw new NotFoundError('like tidak ditemukan');
+    if (result.rowCount) {
+      return true;
     }
+    return false;
   }
 }
 

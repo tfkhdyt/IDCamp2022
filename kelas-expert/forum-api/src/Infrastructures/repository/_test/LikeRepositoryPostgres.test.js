@@ -7,7 +7,6 @@ const LikesTableTestHelper = require('../../../../tests/LikesTableTestHelper');
 const NewLike = require('../../../Domains/likes/entities/NewLike');
 
 const LikeRepositoryPostgres = require('../LikeRepositoryPostgres');
-const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
 describe('LikeRepositoryPostgres', () => {
   afterEach(async () => {
@@ -75,8 +74,8 @@ describe('LikeRepositoryPostgres', () => {
     });
   });
 
-  describe('checkLikeStatus function', () => {
-    it('should not throw error', async () => {
+  describe('isAlreadyLiked function', () => {
+    it('should return true', async () => {
       // arrange
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
@@ -95,15 +94,15 @@ describe('LikeRepositoryPostgres', () => {
 
       // action and assert
       await expect(
-        likeRepositoryPostgres.checkLikeStatus({
+        likeRepositoryPostgres.isAlreadyLiked({
           threadId,
           commentId,
           owner,
         })
-      ).resolves.not.toThrow(NotFoundError);
+      ).resolves.toEqual(true);
     });
 
-    it('should throw not found error', async () => {
+    it('should return false', async () => {
       // arrange
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({});
@@ -122,12 +121,12 @@ describe('LikeRepositoryPostgres', () => {
 
       // action & assert
       await expect(
-        likeRepositoryPostgres.checkLikeStatus({
+        likeRepositoryPostgres.isAlreadyLiked({
           threadId,
           commentId,
           owner,
         })
-      ).rejects.toThrow(NotFoundError);
+      ).resolves.toEqual(false);
     });
   });
 });
