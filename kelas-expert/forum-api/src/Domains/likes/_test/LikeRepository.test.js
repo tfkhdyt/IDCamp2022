@@ -15,5 +15,8 @@ describe('LikeRepository interface', () => {
     await expect(likeRepository.isAlreadyLiked({})).rejects.toThrowError(
       'LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED'
     );
+    await expect(likeRepository.getLikeCount('')).rejects.toThrowError(
+      'LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+    );
   });
 });
