@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-exports.up = pgm => {
+exports.up = (pgm) => {
   pgm.createTable('likes', {
     id: {
       type: 'VARCHAR(50)',
@@ -17,7 +17,7 @@ exports.up = pgm => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
-  })
+  });
 
   pgm.addConstraint(
     'likes',
@@ -38,7 +38,7 @@ exports.up = pgm => {
   );
 };
 
-exports.down = pgm => {
+exports.down = (pgm) => {
   pgm.dropConstraint('likes', 'fk_likes.comment_id_comments.id');
   pgm.dropConstraint('likes', 'fk_likes.thread_id_threads.id');
   pgm.dropConstraint('likes', 'fk_likes.owner_users.id');

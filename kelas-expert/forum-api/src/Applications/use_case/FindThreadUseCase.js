@@ -1,8 +1,14 @@
 class FindThreadUseCase {
-  constructor({ threadRepository, commentRepository, replyRepository }) {
+  constructor({
+    threadRepository,
+    commentRepository,
+    replyRepository,
+    likeRepository,
+  }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._likeRepository = likeRepository;
   }
 
   async execute(threadId) {
@@ -12,17 +18,21 @@ class FindThreadUseCase {
       threadId
     );
 
-    comments = comments.map((comment) => {
-      const result = {
-        ...comment,
-        content: comment.is_deleted
-          ? '**komentar telah dihapus**'
-          : comment.content,
-      };
-      delete result.is_deleted;
+    comments = await Promise.all(
+      comments.map(async (comment) => {
+        const likeCount = await this._likeRepository.getLikeCount(comment.id);
+        const result = {
+          ...comment,
+          likeCount,
+          content: comment.is_deleted
+            ? '**komentar telah dihapus**'
+            : comment.content,
+        };
+        delete result.is_deleted;
 
-      return result;
-    });
+        return result;
+      })
+    );
 
     comments = await Promise.all(
       comments.map(async (comment) => {
